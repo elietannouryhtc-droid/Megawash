@@ -137,4 +137,13 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /api/auth/health
+ * @desc    Health check endpoint for Railway deployment monitoring
+ * @access  Public
+ */
+router.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 module.exports = router;

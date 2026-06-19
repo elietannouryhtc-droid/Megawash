@@ -8,18 +8,21 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 let pool;
 if (process.env.DATABASE_URL) {
+  // Railway (and most cloud providers) require SSL for PostgreSQL connections.
+  // rejectUnauthorized: false is needed because Railway uses self-signed certs.
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: isProduction ? { rejectUnauthorized: false } : false
+    ssl: { rejectUnauthorized: false }
   });
 } else {
+  // Local development — no SSL needed
   pool = new Pool({
     user: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
     database: process.env.DB_DATABASE || 'car_wash_db',
-    ssl: isProduction ? { rejectUnauthorized: false } : false
+    ssl: false
   });
 }
 
