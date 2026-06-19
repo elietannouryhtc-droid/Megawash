@@ -273,6 +273,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (link) link.classList.add('active');
   }
 
+  // Register Service Worker for PWA offline support
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('Service Worker: Registered successfully.'))
+      .catch(err => console.error('Service Worker: Registration failed:', err));
+  }
+
+  // Inject PWA mobile web app capability meta tags dynamically
+  injectPWAMeta();
+
   // Inject Mobile Bottom Navigation
   injectMobileNav();
 });
@@ -412,5 +422,44 @@ function injectMobileNav() {
   // If translation library is loaded, run it on the new elements
   if (typeof applyTranslations === 'function') {
     applyTranslations();
+  }
+}
+
+// Dynamically inject essential PWA meta tags into page headers on load
+function injectPWAMeta() {
+  // 1. Link Manifest
+  if (!document.querySelector('link[rel="manifest"]')) {
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/manifest.json';
+    document.head.appendChild(link);
+  }
+  // 2. Apple Touch Icon
+  if (!document.querySelector('link[rel="apple-touch-icon"]')) {
+    const link = document.createElement('link');
+    link.rel = 'apple-touch-icon';
+    link.href = '/logo.png';
+    document.head.appendChild(link);
+  }
+  // 3. Theme Color
+  if (!document.querySelector('meta[name="theme-color"]')) {
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = '#0A0A0A';
+    document.head.appendChild(meta);
+  }
+  // 4. Apple Web App Capable
+  if (!document.querySelector('meta[name="apple-mobile-web-app-capable"]')) {
+    const meta = document.createElement('meta');
+    meta.name = 'apple-mobile-web-app-capable';
+    meta.content = 'yes';
+    document.head.appendChild(meta);
+  }
+  // 5. Apple Status Bar Style
+  if (!document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')) {
+    const meta = document.createElement('meta');
+    meta.name = 'apple-mobile-web-app-status-bar-style';
+    meta.content = 'black-translucent';
+    document.head.appendChild(meta);
   }
 }
