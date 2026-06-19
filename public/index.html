@@ -3,257 +3,319 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car Wash Kiosk - Check In / Check Out</title>
+  <title>Mega Wash — Login</title>
+  <meta name="description" content="Mega Wash employee and admin login portal.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    .kiosk-container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    .login-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 48px 40px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+      animation: fadeUp 0.5s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .logo-area img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px;
+      margin-bottom: 14px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .logo-area .brand {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-area .tagline {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+
+    .lang-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .lang-btn.active {
+      background: rgba(255,255,255,0.25);
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.4);
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 7px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .form-group input:focus {
+      border-color: rgba(130,100,255,0.8);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+    }
+
+    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(124,58,237,0.5); }
+    .login-btn:active { transform: translateY(0); }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .error-msg {
+      background: rgba(239,68,68,0.2);
+      border: 1px solid rgba(239,68,68,0.4);
+      color: #fca5a5;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 13px;
+      margin-top: 14px;
+      display: none;
       text-align: center;
     }
 
-    h1 {
-      margin-bottom: 5px;
-      color: #1a73e8;
-      font-size: 24px;
-    }
-
-    p.subtitle {
-      color: #666;
-      margin-bottom: 20px;
-      font-size: 14px;
-    }
-
-    .display {
-      width: 100%;
-      height: 60px;
-      background: #e8eaed;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 24px;
-      line-height: 60px;
-      letter-spacing: 5px;
-      color: #3c4043;
-      font-weight: bold;
-      border: 1px solid #dadce0;
-      box-sizing: border-box;
-    }
-
-    .pin-pad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      background-color: #ffffff;
-      border: 1px solid #dadce0;
-      border-radius: 8px;
-      padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #3c4043;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.2s;
-    }
-
-    .btn:hover {
-      background-color: #f1f3f4;
-    }
-
-    .btn:active {
-      background-color: #e8eaed;
-    }
-
-    .btn.action {
-      background-color: #e8f0fe;
-      color: #1a73e8;
-      border-color: #d2e3fc;
-    }
-
-    .btn.action:hover {
-      background-color: #d2e3fc;
-    }
-
-    .btn.submit {
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-    }
-
-    .btn.submit:hover {
-      background-color: #1557b0;
-    }
-
-    .notes-container {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .notes-container label {
-      display: block;
-      font-size: 12px;
-      font-weight: bold;
-      color: #5f6368;
-      margin-bottom: 4px;
-    }
-
-    .notes-input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #dadce0;
-      border-radius: 4px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    .message {
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .success {
-      background-color: #e6f4ea;
-      color: #137333;
-      border: 1px solid #ceead6;
-    }
-
-    .error {
-      background-color: #fce8e6;
-      color: #c5221f;
-      border: 1px solid #fad2cf;
-    }
-
     .footer {
-      margin-top: 25px;
-      font-size: 11px;
-      color: #9aa0a6;
+      text-align: center;
+      margin-top: 32px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
     }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <div class="kiosk-container">
-    <h1>Car Wash Station</h1>
-    <p class="subtitle">Enter PIN to Check In or Check Out</p>
+<div class="login-card">
 
-    <div class="display" id="pinDisplay">----</div>
-
-    <div class="notes-container">
-      <label for="notes">Check-in/out Notes (Optional):</label>
-      <input type="text" id="notes" class="notes-input" placeholder="e.g. Starting morning shift...">
-    </div>
-
-    <div class="pin-pad">
-      <button class="btn" onclick="pressNum('1')">1</button>
-      <button class="btn" onclick="pressNum('2')">2</button>
-      <button class="btn" onclick="pressNum('3')">3</button>
-      <button class="btn" onclick="pressNum('4')">4</button>
-      <button class="btn" onclick="pressNum('5')">5</button>
-      <button class="btn" onclick="pressNum('6')">6</button>
-      <button class="btn" onclick="pressNum('7')">7</button>
-      <button class="btn" onclick="pressNum('8')">8</button>
-      <button class="btn" onclick="pressNum('9')">9</button>
-      <button class="btn action" onclick="clearPin()">Clear</button>
-      <button class="btn" onclick="pressNum('0')">0</button>
-      <button class="btn submit action" onclick="submitToggle()">Enter</button>
-    </div>
-
-    <div id="msgBox" class="message"></div>
-
-    <div class="footer">
-      Car Wash Check-In Check-Out App &copy; 2026<br>
-      Timezone Enforced: America/Toronto
-    </div>
+  <div class="logo-area">
+    <div class="brand">🚗 Mega Wash</div>
+    <div class="tagline" id="tagline">Employee & Admin Portal</div>
   </div>
 
-  <script>
-    let currentPin = "";
-    const display = document.getElementById("pinDisplay");
-    const notesInput = document.getElementById("notes");
-    const msgBox = document.getElementById("msgBox");
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+  </div>
 
-    function updateDisplay() {
-      if (currentPin.length === 0) {
-        display.innerText = "----";
-      } else {
-        display.innerText = "*".repeat(currentPin.length);
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label id="label-username" for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username"
+             placeholder="admin / manager / employee" required>
+    </div>
+
+    <div class="form-group">
+      <label id="label-password" for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password"
+             placeholder="••••••••" required>
+    </div>
+
+    <button class="login-btn" id="loginBtn" type="submit">
+      <span id="btnText">Sign In</span>
+    </button>
+
+    <div class="error-msg" id="errorMsg"></div>
+  </form>
+
+  <div class="footer" id="footer-text">
+    Mega Wash © 2026 · Montreal, QC · America/Toronto
+  </div>
+</div>
+
+<script>
+  // ── i18n ──────────────────────────────────────────────
+  const T = {
+    en: {
+      tagline: 'Employee & Admin Portal',
+      labelUser: 'Username',
+      labelPass: 'Password',
+      btnSign: 'Sign In',
+      btnSigning: 'Signing in…',
+      footer: 'Mega Wash © 2026 · Montreal, QC · America/Toronto'
+    },
+    fr: {
+      tagline: 'Portail Employé & Administrateur',
+      labelUser: 'Nom d\'utilisateur',
+      labelPass: 'Mot de passe',
+      btnSign: 'Se connecter',
+      btnSigning: 'Connexion…',
+      footer: 'Mega Wash © 2026 · Montréal, QC · America/Toronto'
+    }
+  };
+
+  let lang = localStorage.getItem('mw_lang') || 'en';
+
+  function setLang(l) {
+    lang = l;
+    localStorage.setItem('mw_lang', l);
+    const t = T[l];
+    document.getElementById('tagline').textContent = t.tagline;
+    document.getElementById('label-username').textContent = t.labelUser;
+    document.getElementById('label-password').textContent = t.labelPass;
+    document.getElementById('btnText').textContent = t.btnSign;
+    document.getElementById('footer-text').textContent = t.footer;
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+    document.getElementById('btn-fr').classList.toggle('active', l === 'fr');
+  }
+
+  setLang(lang);
+
+  // ── Auth ──────────────────────────────────────────────
+  // If already logged in, redirect immediately
+  const storedUser = (() => {
+    try { return JSON.parse(localStorage.getItem('carwash_user')); } catch { return null; }
+  })();
+  if (storedUser && localStorage.getItem('carwash_jwt')) {
+    redirectByRole(storedUser.role);
+  }
+
+  function redirectByRole(role) {
+    if (role === 'admin' || role === 'manager') {
+      window.location.href = '/admin/dashboard.html';
+    } else {
+      window.location.href = '/employee/keypad.html';
+    }
+  }
+
+  function parseJwt(token) {
+    try {
+      return JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    } catch { return null; }
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const btn      = document.getElementById('loginBtn');
+    const btnText  = document.getElementById('btnText');
+    const errBox   = document.getElementById('errorMsg');
+
+    errBox.style.display = 'none';
+    btn.disabled = true;
+    btnText.innerHTML = `<span class="spinner"></span>${T[lang].btnSigning}`;
+
+    try {
+      const res  = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || (lang === 'fr' ? 'Identifiants invalides.' : 'Invalid credentials.'));
       }
+
+      localStorage.setItem('carwash_jwt', data.token);
+      const claims = parseJwt(data.token) || data.user;
+      localStorage.setItem('carwash_user', JSON.stringify(claims));
+      redirectByRole(claims.role);
+
+    } catch (err) {
+      errBox.textContent = err.message;
+      errBox.style.display = 'block';
+      btn.disabled = false;
+      btnText.textContent = T[lang].btnSign;
     }
-
-    function pressNum(num) {
-      if (currentPin.length < 6) {
-        currentPin += num;
-        updateDisplay();
-      }
-    }
-
-    function clearPin() {
-      currentPin = "";
-      updateDisplay();
-    }
-
-    async function submitToggle() {
-      if (currentPin.length === 0) {
-        showMsg("Please enter a PIN", false);
-        return;
-      }
-
-      msgBox.style.display = "none";
-
-      try {
-        const response = await fetch("/api/checkins/pin-toggle", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            pin: currentPin,
-            notes: notesInput.value
-          })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          showMsg(data.message, true);
-          notesInput.value = "";
-        } else {
-          showMsg(data.error || "An error occurred", false);
-        }
-      } catch (err) {
-        showMsg("Network error. Cannot connect to server.", false);
-      } finally {
-        currentPin = "";
-        updateDisplay();
-      }
-    }
-
-    function showMsg(text, isSuccess) {
-      msgBox.innerText = text;
-      msgBox.className = "message " + (isSuccess ? "success" : "error");
-      msgBox.style.display = "block";
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
