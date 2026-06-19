@@ -62,11 +62,12 @@ async function loadDashboardData() {
         } else {
           activityEl.innerHTML = recentAudits.map(log => {
             const dateStr = new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const readableDetails = formatAuditDetails(log.action, log.details);
             return `
               <div class="audit-entry">
                 <div>
                   <div style="font-size:0.875rem; font-weight:600;">${escapeHtml(log.action)}</div>
-                  <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHtml(log.details)}</div>
+                  <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHtml(readableDetails)}</div>
                 </div>
                 <div style="text-align:right; font-size:0.75rem;">
                   <div>${escapeHtml(log.username || 'System')}</div>
@@ -86,6 +87,45 @@ async function loadDashboardData() {
     document.getElementById('statHours').textContent = 'Error';
     document.getElementById('statAdvances').textContent = 'Error';
     document.getElementById('statPayroll').textContent = 'Error';
+  }
+}
+
+function formatAuditDetails(action, detailsStr) {
+  if (!detailsStr) return '';
+  if (!detailsStr.trim().startsWith('{') && !detailsStr.trim().startsWith('[')) {
+    return detailsStr;
+  }
+  try {
+    const details = JSON.parse(detailsStr);
+    const lang = localStorage.getItem('lang') || 'en';
+    if (action === 'CHECK_IN') {
+      return lang === 'fr' ? `Arrivée : ${details.employee_name || ''}` : `Checked In: ${details.employee_name || ''}`;
+    }
+    if (action === 'CHECK_OUT') {
+      const hrs = details.hours_worked !== undefined ? parseFloat(details.hours_worked).toFixed(2) : '0.00';
+      return lang === 'fr' 
+        ? `Départ : ${details.employee_name || ''} (Travaillé : ${hrs} h)` 
+        : `Checked Out: ${details.employee_name || ''} (Worked: ${hrs} hrs)`;
+    }
+    if (action === 'LOGIN') return lang === 'fr' ? 'Connexion réussie.' : 'User successfully logged in.';
+    if (action === 'LOGOUT') return lang === 'fr' ? 'Déconnexion.' : 'User logged out.';
+    if (action === 'UPDATE_SETTING') {
+      return lang === 'fr' 
+        ? `Modifié de "${details.old_value || ''}" à "${details.new_value || ''}"` 
+        : `Changed from "${details.old_value || ''}" to "${details.new_value || ''}"`;
+    }
+    if (action === 'CREATE_EMPLOYEE') {
+      const empName = details.employee ? `${details.employee.first_name} ${details.employee.last_name}` : '';
+      return lang === 'fr' ? `Créé l'employé : ${empName}` : `Created employee: ${empName}`;
+    }
+    if (action === 'GENERATE_PAYROLL') {
+      return lang === 'fr' 
+        ? `Généré la paie pour ${details.count || 0} employé(s)` 
+        : `Generated payroll for ${details.count || 0} employee(s)`;
+    }
+    return JSON.stringify(details);
+  } catch (e) {
+    return detailsStr;
   }
 }
 
