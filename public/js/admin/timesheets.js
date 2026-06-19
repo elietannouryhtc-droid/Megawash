@@ -216,13 +216,19 @@ shiftForm.addEventListener('submit', async (e) => {
   const notes = document.getElementById('shiftNotes').value.trim();
 
   // Parse check-in and check-out to Date objects in Toronto local timezone
-  // Swedish format 'YYYY-MM-DD' is perfect for parsing along with 'HH:MM'
-  const checkInDate = new Date(`${inDateVal}T${inTimeVal}:00`);
-  const checkOutDate = new Date(`${outDateVal}T${outTimeVal}:00`);
-
-  if (checkOutDate < checkInDate) {
-    showToast('Check-out time cannot be before check-in time!', 'error');
+  if (!inDateVal || !inTimeVal) {
+    showToast('Check-in date and time are required!', 'error');
     return;
+  }
+  const checkInDate = new Date(`${inDateVal}T${inTimeVal}:00`);
+  
+  let checkOutDate = null;
+  if (outDateVal && outTimeVal) {
+    checkOutDate = new Date(`${outDateVal}T${outTimeVal}:00`);
+    if (checkOutDate < checkInDate) {
+      showToast('Check-out time cannot be before check-in time!', 'error');
+      return;
+    }
   }
 
   try {
@@ -232,7 +238,7 @@ shiftForm.addEventListener('submit', async (e) => {
         method: 'PUT',
         body: JSON.stringify({
           check_in: checkInDate.toISOString(),
-          check_out: checkOutDate.toISOString(),
+          check_out: checkOutDate ? checkOutDate.toISOString() : null,
           notes
         })
       });
@@ -250,7 +256,7 @@ shiftForm.addEventListener('submit', async (e) => {
         body: JSON.stringify({
           employee_id,
           check_in: checkInDate.toISOString(),
-          check_out: checkOutDate.toISOString(),
+          check_out: checkOutDate ? checkOutDate.toISOString() : null,
           notes
         })
       });

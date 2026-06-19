@@ -69,7 +69,7 @@ async function login(username, password) {
       return { success: true, user: claims };
     } else {
       const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.message || 'Login failed');
+      throw new Error(errData.error || errData.message || 'Login failed');
     }
   } catch (err) {
     console.warn('Backend connection failed, falling back to mock authentication for demo:', err.message);
@@ -166,7 +166,7 @@ async function apiFetch(endpoint, options = {}) {
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.message || 'API request failed');
+      throw new Error(errData.error || errData.message || 'API request failed');
     }
 
     return await response.json();
@@ -246,4 +246,132 @@ document.addEventListener('DOMContentLoaded', () => {
     
     langToggle.parentNode.insertBefore(themeBtn, langToggle);
   }
+
+  // Inject Mobile Bottom Navigation
+  injectMobileNav();
 });
+
+// Helper function to inject mobile bottom nav bar & drawer sheet dynamically
+function injectMobileNav() {
+  const path = window.location.pathname;
+  if (!path.includes('/admin/')) return;
+
+  // 1. Create and inject the mobile bottom nav bar
+  const nav = document.createElement('nav');
+  nav.className = 'mobile-bottom-nav';
+  nav.innerHTML = `
+    <a href="dashboard.html" class="mobile-nav-item" id="mobile-nav-dash">
+      <span class="icon">📊</span>
+      <span data-i18n="navDashboard">Dashboard</span>
+    </a>
+    <a href="employees.html" class="mobile-nav-item" id="mobile-nav-emp">
+      <span class="icon">👤</span>
+      <span data-i18n="navEmployees">Employees</span>
+    </a>
+    <a href="timesheets.html" class="mobile-nav-item" id="mobile-nav-time">
+      <span class="icon">📅</span>
+      <span data-i18n="navTimesheets">Timesheets</span>
+    </a>
+    <a href="payroll.html" class="mobile-nav-item" id="mobile-nav-pay">
+      <span class="icon">💵</span>
+      <span data-i18n="navPayroll">Payroll</span>
+    </a>
+    <a href="#" class="mobile-nav-item" id="mobile-nav-more">
+      <span class="icon">•••</span>
+      <span data-i18n="navMore">More</span>
+    </a>
+  `;
+  document.body.appendChild(nav);
+
+  // 2. Create and inject the more menu drawer
+  let backdrop = document.getElementById('moreMenuBackdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'moreMenuBackdrop';
+    backdrop.className = 'drawer-backdrop';
+    document.body.appendChild(backdrop);
+  }
+
+  let drawer = document.getElementById('moreMenuDrawer');
+  if (!drawer) {
+    drawer = document.createElement('div');
+    drawer.id = 'moreMenuDrawer';
+    drawer.className = 'more-menu-drawer';
+    drawer.innerHTML = `
+      <div class="drawer-drag-indicator"></div>
+      <div class="drawer-grid">
+        <a href="advances.html" class="drawer-item" id="drawer-nav-adv">
+          <span class="icon">💸</span>
+          <span data-i18n="navAdvances">Advances</span>
+        </a>
+        <a href="reports.html" class="drawer-item" id="drawer-nav-rep">
+          <span class="icon">📈</span>
+          <span data-i18n="navReports">Reports</span>
+        </a>
+        <a href="audit.html" class="drawer-item" id="drawer-nav-audit">
+          <span class="icon">📋</span>
+          <span data-i18n="navAudit">Audit Logs</span>
+        </a>
+        <a href="settings.html" class="drawer-item" id="drawer-nav-set">
+          <span class="icon">⚙️</span>
+          <span data-i18n="navSettings">Settings</span>
+        </a>
+        <a href="#" class="drawer-item" id="drawer-logout">
+          <span class="icon" style="color: var(--danger);">🚪</span>
+          <span data-i18n="logout">Logout</span>
+        </a>
+      </div>
+    `;
+    document.body.appendChild(drawer);
+  }
+
+  // 3. Highlight the active nav item
+  if (path.includes('dashboard.html')) {
+    document.getElementById('mobile-nav-dash').classList.add('active');
+  } else if (path.includes('employees.html')) {
+    document.getElementById('mobile-nav-emp').classList.add('active');
+  } else if (path.includes('timesheets.html')) {
+    document.getElementById('mobile-nav-time').classList.add('active');
+  } else if (path.includes('payroll.html')) {
+    document.getElementById('mobile-nav-pay').classList.add('active');
+  } else {
+    document.getElementById('mobile-nav-more').classList.add('active');
+  }
+
+  // Highlight active drawer item
+  if (path.includes('advances.html')) {
+    document.getElementById('drawer-nav-adv').style.borderColor = 'var(--primary)';
+  } else if (path.includes('reports.html')) {
+    document.getElementById('drawer-nav-rep').style.borderColor = 'var(--primary)';
+  } else if (path.includes('audit.html')) {
+    document.getElementById('drawer-nav-audit').style.borderColor = 'var(--primary)';
+  } else if (path.includes('settings.html')) {
+    document.getElementById('drawer-nav-set').style.borderColor = 'var(--primary)';
+  }
+
+  // 4. Add interaction event listeners
+  const moreBtn = document.getElementById('mobile-nav-more');
+  moreBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    drawer.classList.toggle('open');
+    backdrop.classList.toggle('active');
+  });
+
+  backdrop.addEventListener('click', () => {
+    drawer.classList.remove('open');
+    backdrop.classList.remove('active');
+  });
+
+  const drawerLogout = document.getElementById('drawer-logout');
+  if (drawerLogout) {
+    drawerLogout.addEventListener('click', (e) => {
+      e.preventDefault();
+      logout();
+    });
+  }
+
+  // If translation library is loaded, run it on the new elements
+  if (typeof applyTranslations === 'function') {
+    applyTranslations();
+  }
+}

@@ -61,6 +61,7 @@ const translations = {
     navReports: "Reports",
     navAudit: "Audit Logs",
     navSettings: "Settings",
+    navMore: "More",
 
     // Admin Dashboard
     dashTitle: "Dashboard Overview",
@@ -139,6 +140,9 @@ const translations = {
     repTotalHours: "Total Worked Hours",
     repTotalPayroll: "Total Payroll Paid",
     repTotalAdvances: "Total Advances Given",
+    chartHoursByEmployee: "Hours by Employee",
+    chartWeeklyCosts: "Payroll Costs",
+    chartAttendanceTrends: "Attendance Trends",
 
     // Admin Audit
     auditTitle: "System Audit Logs",
@@ -218,6 +222,7 @@ const translations = {
     navReports: "Rapports",
     navAudit: "Journal d'Audit",
     navSettings: "Configuration",
+    navMore: "Plus",
 
     // Admin Dashboard
     dashTitle: "Aperçu du Tableau de Bord",
@@ -296,6 +301,9 @@ const translations = {
     repTotalHours: "Total d'Heures Travaillées",
     repTotalPayroll: "Total Salaires Versés",
     repTotalAdvances: "Total Avances Versées",
+    chartHoursByEmployee: "Heures par Employé",
+    chartWeeklyCosts: "Coûts de la Paie",
+    chartAttendanceTrends: "Tendances de Présence",
 
     // Admin Audit
     auditTitle: "Journal d'Audit Système",

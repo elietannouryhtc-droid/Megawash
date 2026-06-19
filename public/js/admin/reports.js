@@ -3,6 +3,181 @@
 let filteredShifts = [];
 let filteredAdvances = [];
 
+let chartHours = null;
+let chartCosts = null;
+let chartAttendance = null;
+
+function destroyCharts() {
+  if (chartHours) {
+    chartHours.destroy();
+    chartHours = null;
+  }
+  if (chartCosts) {
+    chartCosts.destroy();
+    chartCosts = null;
+  }
+  if (chartAttendance) {
+    chartAttendance.destroy();
+    chartAttendance = null;
+  }
+}
+
+function renderCharts(currencySymbol) {
+  destroyCharts();
+
+  const isLight = document.body.classList.contains('light-mode');
+  const textColor = isLight ? '#1D1D1F' : '#F5F5F7';
+  const gridColor = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.08)';
+
+  // 1. Hours By Employee
+  const hoursByEmployee = {};
+  filteredShifts.forEach(s => {
+    const name = `${s.first_name} ${s.last_name}`;
+    hoursByEmployee[name] = (hoursByEmployee[name] || 0) + parseFloat(s.hours_worked || 0);
+  });
+  const empLabels = Object.keys(hoursByEmployee);
+  const empHours = Object.values(hoursByEmployee).map(v => parseFloat(v.toFixed(2)));
+
+  const ctxHours = document.getElementById('chartHoursByEmployee');
+  if (ctxHours && empLabels.length > 0) {
+    chartHours = new Chart(ctxHours, {
+      type: 'bar',
+      data: {
+        labels: empLabels,
+        datasets: [{
+          label: t('totalHoursHeader') || 'Hours',
+          data: empHours,
+          backgroundColor: 'rgba(0, 122, 255, 0.75)',
+          borderColor: 'rgba(0, 122, 255, 1)',
+          borderWidth: 1,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) { return `${context.parsed.y} hrs`; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: textColor }
+          },
+          y: {
+            grid: { color: gridColor },
+            ticks: { color: textColor, stepSize: 1 }
+          }
+        }
+      }
+    });
+  }
+
+  // 2. Payroll Costs Daily
+  const costsByDate = {};
+  filteredShifts.forEach(s => {
+    const dateStr = new Date(s.check_in).toLocaleDateString('sv-SE', { timeZone: 'America/Toronto' });
+    const gross = parseFloat(s.hours_worked || 0) * parseFloat(s.hourly_rate || 0);
+    costsByDate[dateStr] = (costsByDate[dateStr] || 0) + gross;
+  });
+  const sortedDates = Object.keys(costsByDate).sort();
+  const dailyCosts = sortedDates.map(d => parseFloat(costsByDate[d].toFixed(2)));
+
+  const ctxCosts = document.getElementById('chartWeeklyCosts');
+  if (ctxCosts && sortedDates.length > 0) {
+    chartCosts = new Chart(ctxCosts, {
+      type: 'line',
+      data: {
+        labels: sortedDates,
+        datasets: [{
+          label: t('grossPay') || 'Gross Pay',
+          data: dailyCosts,
+          fill: true,
+          backgroundColor: 'rgba(52, 199, 89, 0.12)',
+          borderColor: 'rgba(52, 199, 89, 1)',
+          borderWidth: 2,
+          tension: 0.35,
+          pointRadius: 4,
+          pointBackgroundColor: 'rgba(52, 199, 89, 1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) { return `${currencySymbol}${context.parsed.y}`; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: textColor }
+          },
+          y: {
+            grid: { color: gridColor },
+            ticks: { color: textColor }
+          }
+        }
+      }
+    });
+  }
+
+  // 3. Attendance Trends
+  const shiftsByDate = {};
+  filteredShifts.forEach(s => {
+    const dateStr = new Date(s.check_in).toLocaleDateString('sv-SE', { timeZone: 'America/Toronto' });
+    shiftsByDate[dateStr] = (shiftsByDate[dateStr] || 0) + 1;
+  });
+  const sortedAttendanceDates = Object.keys(shiftsByDate).sort();
+  const dailyShiftsCount = sortedAttendanceDates.map(d => shiftsByDate[d]);
+
+  const ctxAttendance = document.getElementById('chartAttendanceTrends');
+  if (ctxAttendance && sortedAttendanceDates.length > 0) {
+    chartAttendance = new Chart(ctxAttendance, {
+      type: 'line',
+      data: {
+        labels: sortedAttendanceDates,
+        datasets: [{
+          label: t('repTotalShifts') || 'Shifts',
+          data: dailyShiftsCount,
+          fill: false,
+          borderColor: 'rgba(255, 149, 0, 1)',
+          borderWidth: 2.5,
+          tension: 0.2,
+          pointRadius: 4,
+          pointBackgroundColor: 'rgba(255, 149, 0, 1)'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: textColor }
+          },
+          y: {
+            grid: { color: gridColor },
+            ticks: { color: textColor, stepSize: 1 }
+          }
+        }
+      }
+    });
+  }
+}
+
 function setDefaultDates() {
   const end = new Date();
   const start = new Date();
@@ -96,6 +271,13 @@ async function generateReport() {
           `;
         }).join('');
       }
+    }
+
+    // Render Charts
+    if (filteredShifts.length === 0) {
+      destroyCharts();
+    } else {
+      renderCharts(currencySymbol);
     }
 
     // Toggle Display Panels

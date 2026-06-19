@@ -7,215 +7,228 @@
   <meta name="description" content="Mega Wash employee and admin login portal.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --bg-primary: #0A0A0A;
+      --bg-secondary: #161617;
+      --text-main: #F5F5F7;
+      --text-muted: #86868B;
+      --primary: #007AFF;
+      --primary-hover: #1F8BFF;
+      --glass-bg: rgba(22, 22, 23, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      --border-radius: 20px;
+    }
 
-    /* Light Mode Theme Overrides */
     body.light-mode {
-      background: linear-gradient(135deg, #eef2f6, #dfe5eb, #d0d7e2);
-      color: #1f2937;
+      --bg-primary: #F5F5F7;
+      --bg-secondary: #FFFFFF;
+      --text-main: #1D1D1F;
+      --text-muted: #86868B;
+      --primary: #0071E3;
+      --primary-hover: #0077ED;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --glass-shadow: 0 20px 45px rgba(0,0,0,0.04);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       touch-action: manipulation;
-    }
-    body.light-mode .login-card {
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-    }
-    body.light-mode .logo-area .brand {
-      color: #1f2937;
-    }
-    body.light-mode .logo-area .tagline {
-      color: #57606a;
-    }
-    body.light-mode .form-group label {
-      color: #1f2937;
-    }
-    body.light-mode .form-group input {
-      background: rgba(0, 0, 0, 0.02);
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      color: #1f2937;
-    }
-    body.light-mode .form-group input:focus {
-      background: #ffffff;
-      border-color: #4f46e5;
-    }
-    body.light-mode .form-group input::placeholder {
-      color: #9ca3af;
-    }
-    body.light-mode .lang-btn {
-      background: rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      color: #4b5563;
-    }
-    body.light-mode .lang-btn.active {
-      background: rgba(79, 70, 229, 0.12);
-      color: #4f46e5;
-      border-color: rgba(79, 70, 229, 0.25);
-    }
-    body.light-mode .footer {
-      color: #57606a;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-family);
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
     .login-card {
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 24px;
-      padding: 48px 40px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius);
+      padding: 3.5rem 2.5rem;
       width: 100%;
-      max-width: 420px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-      animation: fadeUp 0.5s ease;
+      max-width: 400px;
+      box-shadow: var(--glass-shadow);
+      animation: appleSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
+    @keyframes appleSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     .logo-area {
       text-align: center;
-      margin-bottom: 36px;
+      margin-bottom: 2.25rem;
     }
 
-    .logo-area img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.1);
-      padding: 8px;
-      margin-bottom: 14px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), #5AC8FA);
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
     }
 
     .logo-area .brand {
-      font-size: 26px;
+      font-size: 1.65rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-main);
       letter-spacing: -0.5px;
     }
 
     .logo-area .tagline {
-      font-size: 13px;
-      color: rgba(255,255,255,0.5);
-      margin-top: 4px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      font-weight: 500;
     }
 
     .lang-toggle {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-bottom: 28px;
+      gap: 6px;
+      margin-bottom: 2rem;
     }
 
     .lang-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
-      padding: 5px 16px;
-      border-radius: 20px;
-      font-size: 13px;
+      background: rgba(134, 134, 139, 0.08);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 0.35rem 1rem;
+      border-radius: 980px;
+      font-size: 0.76rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
-      font-family: 'Inter', sans-serif;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--font-family);
     }
 
     .lang-btn.active {
-      background: rgba(255,255,255,0.25);
-      color: #ffffff;
-      border-color: rgba(255,255,255,0.4);
-      font-weight: 600;
+      background: var(--text-main);
+      color: var(--bg-primary);
+      border-color: var(--text-main);
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
     }
 
     .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 7px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .form-group input {
       width: 100%;
-      padding: 13px 16px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.75rem 1rem;
+      background: var(--bg-tertiary, rgba(134, 134, 139, 0.05));
+      border: 1px solid var(--glass-border);
       border-radius: 12px;
-      color: #ffffff;
-      font-size: 15px;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.2s, background 0.2s;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: var(--font-family);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       outline: none;
     }
 
-    .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input::placeholder { color: var(--text-muted); opacity: 0.5; }
 
     .form-group input:focus {
-      border-color: rgba(130,100,255,0.8);
-      background: rgba(255,255,255,0.12);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
     }
 
     .login-btn {
       width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      padding: 0.8rem;
+      background: var(--primary);
       border: none;
-      border-radius: 12px;
+      border-radius: 980px;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 0.95rem;
       font-weight: 600;
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-family);
       cursor: pointer;
-      margin-top: 8px;
-      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+      margin-top: 1rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .login-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(124,58,237,0.5); }
-    .login-btn:active { transform: translateY(0); }
-    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .login-btn:hover {
+      background-color: var(--primary-hover);
+      transform: scale(1.02);
+    }
+    
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     .error-msg {
-      background: rgba(239,68,68,0.2);
-      border: 1px solid rgba(239,68,68,0.4);
-      color: #fca5a5;
+      background: rgba(255, 59, 48, 0.12);
+      border: 1px solid var(--danger);
+      color: #ff453a;
       border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 13px;
-      margin-top: 14px;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 1.25rem;
       display: none;
       text-align: center;
+      animation: appleSlideUp 0.3s ease;
+    }
+
+    body.light-mode .error-msg {
+      color: #c92c24;
     }
 
     .footer {
       text-align: center;
-      margin-top: 32px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
+      margin-top: 2.5rem;
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: -0.1px;
     }
 
     .spinner {
       display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.4);
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
       border-top-color: #fff;
       border-radius: 50%;
       animation: spin 0.6s linear infinite;
@@ -231,14 +244,15 @@
 <div class="login-card">
 
   <div class="logo-area">
-    <div class="brand">🚗 Mega Wash</div>
+    <div class="logo-icon">🚗</div>
+    <div class="brand">Mega Wash</div>
     <div class="tagline" id="tagline">Employee & Admin Portal</div>
   </div>
 
-  <div class="lang-toggle" style="position: relative;">
-    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
-    <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
-    <button class="lang-btn" id="themeToggle" onclick="toggleTheme()" style="padding: 5px 12px; margin-left: 6px;" title="Toggle Theme">☀️</button>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" id="themeToggle" onclick="toggleTheme()" style="padding: 0.35rem 0.75rem;" title="Toggle Theme">☀️</button>
   </div>
 
   <form id="loginForm" onsubmit="handleLogin(event)">
@@ -322,7 +336,6 @@
   setLang(lang);
 
   // ── Auth ──────────────────────────────────────────────
-  // If already logged in, redirect immediately
   const storedUser = (() => {
     try { return JSON.parse(localStorage.getItem('carwash_user')); } catch { return null; }
   })();

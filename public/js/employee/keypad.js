@@ -82,21 +82,23 @@ async function loadStatusBoards() {
     const recentActions = await apiFetch('/api/checkins/recent-actions');
     
     // Render Active Staff
-    const activeListEl = document.getElementById('activeStaffList');
+    const activeCardsEl = document.getElementById('activeStaffCards');
     const activeCountEl = document.getElementById('activeStaffCount');
     
-    if (activeListEl) {
+    if (activeCardsEl) {
       activeCountEl.textContent = statusData.checkedIn.length;
       if (statusData.checkedIn.length === 0) {
-        activeListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No employees currently on shift.</td></tr>`;
+        activeCardsEl.innerHTML = `<p style="text-align: center; color: var(--text-muted); width: 100%;" data-i18n="loading">No employees currently on shift.</p>`;
       } else {
-        activeListEl.innerHTML = statusData.checkedIn.map(s => {
+        activeCardsEl.innerHTML = statusData.checkedIn.map(s => {
           const checkTime = new Date(s.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const initials = `${s.first_name ? s.first_name[0] : ''}${s.last_name ? s.last_name[0] : ''}`.toUpperCase();
           return `
-            <tr>
-              <td><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--success); margin-right:8px; box-shadow: 0 0 8px var(--success);"></span>${escapeHtml(s.first_name + ' ' + s.last_name)}</td>
-              <td>${checkTime}</td>
-            </tr>
+            <div class="emp-status-card">
+              <div class="emp-avatar-dot active">${initials}</div>
+              <div class="emp-card-name">${escapeHtml(s.first_name + ' ' + s.last_name)}</div>
+              <div class="emp-card-time">${checkTime}</div>
+            </div>
           `;
         }).join('');
       }
@@ -122,24 +124,26 @@ async function loadStatusBoards() {
       }
     }
     // Also Render to Drawer
-    const drawerActiveListEl = document.getElementById('drawerActiveStaffList');
+    const drawerActiveCardsEl = document.getElementById('drawerActiveStaffCards');
     const drawerActiveCountEl = document.getElementById('drawerActiveStaffCount');
     const headerLiveCountEl = document.getElementById('headerLiveCount');
     
     if (drawerActiveCountEl) drawerActiveCountEl.textContent = statusData.checkedIn.length;
     if (headerLiveCountEl) headerLiveCountEl.textContent = statusData.checkedIn.length;
 
-    if (drawerActiveListEl) {
+    if (drawerActiveCardsEl) {
       if (statusData.checkedIn.length === 0) {
-        drawerActiveListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No employees currently on shift.</td></tr>`;
+        drawerActiveCardsEl.innerHTML = `<p style="text-align: center; color: var(--text-muted); width: 100%;" data-i18n="loading">No employees currently on shift.</p>`;
       } else {
-        drawerActiveListEl.innerHTML = statusData.checkedIn.map(s => {
+        drawerActiveCardsEl.innerHTML = statusData.checkedIn.map(s => {
           const checkTime = new Date(s.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const initials = `${s.first_name ? s.first_name[0] : ''}${s.last_name ? s.last_name[0] : ''}`.toUpperCase();
           return `
-            <tr>
-              <td><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--success); margin-right:8px; box-shadow: 0 0 8px var(--success);"></span>${escapeHtml(s.first_name + ' ' + s.last_name)}</td>
-              <td>${checkTime}</td>
-            </tr>
+            <div class="emp-status-card">
+              <div class="emp-avatar-dot active">${initials}</div>
+              <div class="emp-card-name">${escapeHtml(s.first_name + ' ' + s.last_name)}</div>
+              <div class="emp-card-time">${checkTime}</div>
+            </div>
           `;
         }).join('');
       }
@@ -165,13 +169,13 @@ async function loadStatusBoards() {
     }
   } catch (err) {
     console.error('Failed to load status boards from API:', err);
-    const activeListEl = document.getElementById('activeStaffList');
-    if (activeListEl) {
-      activeListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">Failed to load live status from server.</td></tr>`;
+    const activeCardsEl = document.getElementById('activeStaffCards');
+    if (activeCardsEl) {
+      activeCardsEl.innerHTML = `<p style="text-align: center; color: var(--text-muted); width: 100%;">Failed to load live status from server.</p>`;
     }
-    const drawerActiveListEl = document.getElementById('drawerActiveStaffList');
-    if (drawerActiveListEl) {
-      drawerActiveListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">Failed to load live status from server.</td></tr>`;
+    const drawerActiveCardsEl = document.getElementById('drawerActiveStaffCards');
+    if (drawerActiveCardsEl) {
+      drawerActiveCardsEl.innerHTML = `<p style="text-align: center; color: var(--text-muted); width: 100%;">Failed to load live status from server.</p>`;
     }
   }
 }
@@ -285,6 +289,7 @@ function showFeedback(message, type, employeeName = '') {
 
   if (!card) return;
 
+  card.style.display = ''; // Clear inline display style so class takes effect!
   card.className = `status-feedback-card ${type === 'success' ? 'success-card' : 'error-card'}`;
   icon.textContent = type === 'success' ? '✓' : '✗';
   title.textContent = type === 'success' ? (employeeName || t('success')) : t('error');

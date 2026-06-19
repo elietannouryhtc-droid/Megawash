@@ -1,210 +1,208 @@
-/* Employee Keypad Styles */
+/* Employee Kiosk and PIN Pad Styles */
 
 .keypad-container {
-  max-width: 1000px;
-  margin: 2rem auto;
+  max-width: 1200px;
+  margin: 1.5rem auto;
   padding: 0 1rem;
+  padding-bottom: 3rem;
 }
 
 .keypad-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
   margin-top: 1.5rem;
-}
-
-@media (max-width: 900px) {
-  .keypad-layout {
-    grid-template-columns: 1fr;
-  }
+  align-items: start;
 }
 
 /* Digital clock style */
 .clock-widget {
   text-align: center;
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 2rem;
+  padding: 1.75rem;
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--glass-shadow);
 }
 
 .clock-time {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 700;
-  color: var(--info);
+  color: var(--primary);
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  letter-spacing: -1px;
+  text-shadow: 0 0 25px rgba(0, 122, 255, 0.25);
+}
+
+body.light-mode .clock-time {
+  text-shadow: none;
 }
 
 .clock-date {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text-muted);
   font-weight: 500;
   margin-top: 0.25rem;
+  letter-spacing: -0.1px;
 }
 
-/* Pin display indicator dots */
+/* PIN Display Dots indicators */
 .pin-display-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .pin-display {
   display: flex;
-  gap: 1.25rem;
+  gap: 1.5rem;
   justify-content: center;
   min-height: 48px;
   align-items: center;
 }
 
 .pin-dot {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: 2px solid var(--text-muted);
-  transition: all var(--transition-fast);
+  transition: var(--transition-fast);
 }
 
 .pin-dot.filled {
-  background: var(--info);
-  border-color: var(--info);
-  box-shadow: 0 0 12px var(--info);
-  transform: scale(1.15);
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
+  transform: scale(1.25);
 }
 
-/* Grid of buttons */
+/* Keypad Layout: Large Circular Apple Buttons */
 .keypad-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  max-width: 320px;
+  gap: 1.25rem 1.75rem;
+  max-width: 280px;
   margin: 0 auto;
 }
 
 .keypad-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-tertiary);
   border: 1px solid var(--glass-border);
-  border-radius: var(--border-radius-md);
+  border-radius: 50%; /* Circle Buttons */
   color: var(--text-main);
-  font-size: 1.75rem;
-  font-weight: 600;
-  height: 72px;
+  font-size: 1.95rem;
+  font-weight: 500;
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: var(--transition-fast);
   user-select: none;
   touch-action: manipulation;
 }
 
 .keypad-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: scale(1.03);
+  background: rgba(134, 134, 139, 0.15);
+  transform: scale(1.08);
 }
 
 .keypad-btn:active {
-  transform: scale(0.97);
+  transform: scale(0.92);
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
 }
 
 .keypad-btn.action-btn {
-  font-size: 1.1rem;
-  background: rgba(255, 255, 255, 0.03);
+  font-size: 1.25rem;
+  background: rgba(134, 134, 139, 0.08);
   color: var(--text-muted);
-  text-transform: uppercase;
 }
 
 .keypad-btn.action-btn:hover {
   color: var(--text-main);
 }
 
-/* Check In / Check Out Big Action Toggles */
-.action-panels {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin-top: 1.5rem;
-}
-
+/* Mode selectors (Check In / Out capsule toggle) */
 .attendance-toggle-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  background: var(--bg-tertiary);
+  padding: 4px;
+  border-radius: 980px;
+  border: 1px solid var(--glass-border);
+  max-width: 320px;
+  margin: 0 auto 2rem auto;
 }
 
 .attendance-mode-btn {
-  height: 60px;
+  flex: 1;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border-radius: var(--border-radius-sm);
-  border: 2px solid transparent;
+  font-size: 0.925rem;
+  font-weight: 600;
+  border-radius: 980px;
+  border: none;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.03);
+  background: transparent;
   color: var(--text-muted);
-  transition: all var(--transition-normal);
+  transition: var(--transition-apple);
   touch-action: manipulation;
 }
 
 .attendance-mode-btn.active-in {
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--success);
-  border-color: var(--success);
-  box-shadow: 0 0 15px var(--success-glow);
+  background: var(--success);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--success-glow);
 }
 
 .attendance-mode-btn.active-out {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--danger);
-  border-color: var(--danger);
-  box-shadow: 0 0 15px var(--danger-glow);
+  background: var(--danger);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--danger-glow);
 }
 
-/* Success / Alert Card overlay inside keypad page */
+/* Confirmation Success/Error State Cards */
 .status-feedback-card {
   padding: 1.5rem;
   text-align: center;
-  border-radius: var(--border-radius-md);
-  margin-bottom: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 2rem;
   display: none;
-  animation: fadeIn 0.4s ease forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  animation: appleSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: var(--glass-shadow);
 }
 
 .status-feedback-card.success-card {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(52, 199, 89, 0.12);
   border: 1px solid var(--success);
   color: var(--success);
   display: block;
 }
 
 .status-feedback-card.error-card {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(255, 59, 48, 0.12);
   border: 1px solid var(--danger);
   color: var(--danger);
   display: block;
 }
 
 .feedback-icon {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
 
 .feedback-title {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
+  letter-spacing: -0.3px;
   margin-bottom: 0.25rem;
 }
 
@@ -213,23 +211,93 @@
   opacity: 0.9;
 }
 
-/* Right side panel - status tables */
+/* Card Directory for working/not-working staff lists */
 .status-panel-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  letter-spacing: -0.2px;
+  margin-bottom: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .active-count {
-  font-size: 0.8rem;
-  background: rgba(6, 182, 212, 0.2);
-  color: var(--info);
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
+  font-size: 0.76rem;
+  background: rgba(0, 122, 255, 0.15);
+  color: var(--primary);
+  padding: 0.2rem 0.75rem;
+  border-radius: 980px;
   font-weight: 600;
+}
+
+/* Live directory cards list */
+.employee-status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.emp-status-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius-md);
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition-apple);
+  min-height: 100px;
+}
+
+.emp-status-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(134, 134, 139, 0.25);
+}
+
+.emp-avatar-dot {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.emp-avatar-dot.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  border: 2px solid var(--bg-secondary);
+}
+
+.emp-card-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.emp-card-time {
+  font-size: 0.725rem;
+  color: var(--text-muted);
 }
 
 /* ──────────────────────────────────────────────────────── */
@@ -258,8 +326,8 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   transition: opacity var(--transition-normal);
 }
@@ -299,7 +367,7 @@
 }
 
 .drawer-title {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -307,17 +375,24 @@
 }
 
 .drawer-close {
-  background: none;
-  border: none;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--glass-border);
   color: var(--text-muted);
-  font-size: 2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   line-height: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: color var(--transition-fast);
 }
 
 .drawer-close:hover {
   color: var(--text-main);
+  background: rgba(134, 134, 139, 0.15);
 }
 
 .drawer-content {
@@ -333,7 +408,7 @@
   flex-direction: column;
 }
 
-/* Responsive Layout Breakpoint for Tablet/Mobile */
+/* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .keypad-layout {
     grid-template-columns: 1fr;

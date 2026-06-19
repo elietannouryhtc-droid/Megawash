@@ -114,6 +114,28 @@
           </div>
         </div>
 
+        <!-- Analytical Charts Grid -->
+        <div class="reports-charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <div class="glass-panel" style="padding: 1.25rem; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <h4 style="align-self: flex-start; margin-bottom: 1rem; font-weight: 600;" data-i18n="chartHoursByEmployee">Hours by Employee</h4>
+            <div style="position: relative; width: 100%; height: 220px;">
+              <canvas id="chartHoursByEmployee"></canvas>
+            </div>
+          </div>
+          <div class="glass-panel" style="padding: 1.25rem; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <h4 style="align-self: flex-start; margin-bottom: 1rem; font-weight: 600;" data-i18n="chartWeeklyCosts">Payroll Costs</h4>
+            <div style="position: relative; width: 100%; height: 220px;">
+              <canvas id="chartWeeklyCosts"></canvas>
+            </div>
+          </div>
+          <div class="glass-panel" style="padding: 1.25rem; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <h4 style="align-self: flex-start; margin-bottom: 1rem; font-weight: 600;" data-i18n="chartAttendanceTrends">Attendance Trends</h4>
+            <div style="position: relative; width: 100%; height: 220px;">
+              <canvas id="chartAttendanceTrends"></canvas>
+            </div>
+          </div>
+        </div>
+
         <!-- Details list table -->
         <div class="table-container">
           <table class="modern-table">
@@ -146,6 +168,7 @@
   <!-- Scripts -->
   <script src="../js/i18n.js"></script>
   <script src="../js/auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../js/admin/reports.js"></script>
 </body>
 </html>
