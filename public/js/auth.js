@@ -3,6 +3,15 @@
 const AUTH_KEY = 'carwash_jwt';
 const USER_KEY = 'carwash_user';
 
+// Immediately apply saved theme on load to prevent visual flash
+(function() {
+  const theme = localStorage.getItem('mw_theme') || 'dark';
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+    document.documentElement.classList.add('light-mode');
+  }
+})();
+
 // Helper to decode JWT token payload without external libraries
 function parseJwt(token) {
   try {
@@ -180,5 +189,29 @@ document.addEventListener('DOMContentLoaded', () => {
     checkPageProtection('employee');
   } else if (path.endsWith('index.html') || path === '/') {
     checkPageProtection();
+  }
+
+  // Inject Theme Toggle Button next to language toggle
+  const langToggle = document.getElementById('languageToggle');
+  if (langToggle) {
+    const theme = localStorage.getItem('mw_theme') || 'dark';
+    const themeBtn = document.createElement('button');
+    themeBtn.className = 'lang-toggle-btn';
+    themeBtn.id = 'themeToggle';
+    themeBtn.innerHTML = theme === 'light' ? '🌙' : '☀️';
+    themeBtn.style.marginRight = '8px';
+    themeBtn.title = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+    
+    themeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isLight = document.body.classList.toggle('light-mode');
+      document.documentElement.classList.toggle('light-mode', isLight);
+      const newTheme = isLight ? 'light' : 'dark';
+      localStorage.setItem('mw_theme', newTheme);
+      themeBtn.innerHTML = isLight ? '🌙' : '☀️';
+      themeBtn.title = isLight ? 'Dark Mode' : 'Light Mode';
+    });
+    
+    langToggle.parentNode.insertBefore(themeBtn, langToggle);
   }
 });

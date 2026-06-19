@@ -189,9 +189,10 @@
     <div class="tagline" id="tagline">Employee & Admin Portal</div>
   </div>
 
-  <div class="lang-toggle">
+  <div class="lang-toggle" style="position: relative;">
     <button class="lang-btn active" id="btn-en" onclick="setLang('en')">🇬🇧 EN</button>
     <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">🇫🇷 FR</button>
+    <button class="lang-btn" id="themeToggle" onclick="toggleTheme()" style="padding: 5px 12px; margin-left: 6px;" title="Toggle Theme">☀️</button>
   </div>
 
   <form id="loginForm" onsubmit="handleLogin(event)">
@@ -241,6 +242,23 @@
   };
 
   let lang = localStorage.getItem('mw_lang') || 'en';
+
+  // ── Theme Management ──────────────────────────────────
+  (function() {
+    const savedTheme = localStorage.getItem('mw_theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+      document.documentElement.classList.add('light-mode');
+      document.getElementById('themeToggle').textContent = '🌙';
+    }
+  })();
+
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light-mode');
+    document.documentElement.classList.toggle('light-mode', isLight);
+    localStorage.setItem('mw_theme', isLight ? 'light' : 'dark');
+    document.getElementById('themeToggle').textContent = isLight ? '🌙' : '☀️';
+  }
 
   function setLang(l) {
     lang = l;

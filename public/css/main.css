@@ -38,6 +38,99 @@
   --transition-normal: 0.3s ease;
 }
 
+/* ──────────────────────────────────────────────────────── */
+/* Light Mode Theme Overrides                               */
+/* ──────────────────────────────────────────────────────── */
+body.light-mode {
+  --bg-primary: #f0f2f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8fafc;
+  
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --primary-glow: rgba(29, 78, 216, 0.15);
+  
+  --text-main: #1f2937;
+  --text-muted: #57606a;
+  --text-inverse: #ffffff;
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Light Mode DOM Overrides */
+body.light-mode .admin-sidebar {
+  background: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+}
+
+body.light-mode .sidebar-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .sidebar-link {
+  color: #4b5563;
+}
+
+body.light-mode .sidebar-link:hover,
+body.light-mode .sidebar-link.active {
+  color: #1d4ed8;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+body.light-mode .sidebar-link.active {
+  background: rgba(29, 78, 216, 0.12);
+}
+
+body.light-mode .sidebar-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .form-control {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--text-main);
+}
+
+body.light-mode .form-control:focus {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(29, 78, 216, 0.2);
+}
+
+body.light-mode .form-control::placeholder {
+  color: #9ca3af;
+}
+
+body.light-mode .btn-secondary {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--text-main);
+}
+
+body.light-mode .btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+body.light-mode .lang-toggle-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: var(--text-main);
+}
+
+body.light-mode .lang-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .mobile-nav-toggle {
+  background: #f1f5f9;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--text-main);
+}
+
 /* Language specific styles/adjustments */
 body.lang-fr {
   word-spacing: 0.02em;
