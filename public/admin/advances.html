@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navAdvances">Salary Advances - Car Wash Portal</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">CW</div>
+        <h2 class="brand-name" data-i18n="appName">Car Wash Portal</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html" class="sidebar-link" id="nav-dash"><span data-i18n="navDashboard">Dashboard</span></a></li>
+        <li><a href="employees.html" class="sidebar-link" id="nav-emp"><span data-i18n="navEmployees">Employees</span></a></li>
+        <li><a href="timesheets.html" class="sidebar-link" id="nav-time"><span data-i18n="navTimesheets">Timesheets</span></a></li>
+        <li><a href="payroll.html" class="sidebar-link" id="nav-pay"><span data-i18n="navPayroll">Payroll</span></a></li>
+        <li><a href="advances.html" class="sidebar-link active" id="nav-adv"><span data-i18n="navAdvances">Salary Advances</span></a></li>
+        <li><a href="reports.html" class="sidebar-link" id="nav-rep"><span data-i18n="navReports">Reports</span></a></li>
+        <li><a href="audit.html" class="sidebar-link" id="nav-audit"><span data-i18n="navAudit">Audit Logs</span></a></li>
+        <li><a href="settings.html" class="sidebar-link" id="nav-set"><span data-i18n="navSettings">Settings</span></a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%;">
+          <span data-i18n="logout">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-content">
+      <!-- Header -->
+      <header class="content-header">
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <button class="mobile-nav-toggle" id="menuToggle">&#9776;</button>
+          <h1 class="page-title" data-i18n="advTitle">Salary Advances</h1>
+        </div>
+        <div class="header-controls">
+          <button class="btn btn-primary btn-sm" id="btnRecordAdvance">
+            + <span data-i18n="requestAdvanceBtn">Record Salary Advance</span>
+          </button>
+          <button class="lang-toggle-btn" id="languageToggle">FR</button>
+        </div>
+      </header>
+
+      <!-- Advances List -->
+      <div class="glass-panel" style="padding: 1rem;">
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th data-i18n="advDate">Request Date</th>
+                <th data-i18n="employeeName">Employee</th>
+                <th data-i18n="advAmount">Amount</th>
+                <th data-i18n="advReason">Reason / Note</th>
+                <th data-i18n="advStatus">Approval Status</th>
+                <th data-i18n="actions" style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="advancesTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-muted);" data-i18n="loading">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Record Salary Advance Modal -->
+  <div class="modal-overlay" id="advanceModal">
+    <div class="glass-panel modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title" data-i18n="requestAdvanceBtn">Record Salary Advance</h3>
+        <button class="modal-close" id="advanceModalClose">&times;</button>
+      </div>
+      <form id="advanceForm">
+        <div class="form-group">
+          <label class="form-label" for="advEmployeeId" data-i18n="employeeName">Employee</label>
+          <select id="advEmployeeId" class="form-control" required></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="advDateInput" data-i18n="advDate">Request Date</label>
+          <input type="date" id="advDateInput" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="advAmountInput" data-i18n="advAmount">Amount</label>
+          <input type="number" id="advAmountInput" class="form-control" min="1" step="0.01" placeholder="50.00" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="advReasonInput" data-i18n="advReason">Reason / Note</label>
+          <input type="text" id="advReasonInput" class="form-control" placeholder="e.g. Emergency expense" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="advStatusSelect" data-i18n="advStatus">Approval Status</label>
+          <select id="advStatusSelect" class="form-control">
+            <option value="pending" data-i18n="pending">Pending</option>
+            <option value="approved" data-i18n="approved">Approved</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnAdvanceCancel" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="save">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/advances.js"></script>
+</body>
+</html>

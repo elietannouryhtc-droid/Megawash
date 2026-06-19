@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navAudit">Audit Logs - Car Wash Portal</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">CW</div>
+        <h2 class="brand-name" data-i18n="appName">Car Wash Portal</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html" class="sidebar-link" id="nav-dash"><span data-i18n="navDashboard">Dashboard</span></a></li>
+        <li><a href="employees.html" class="sidebar-link" id="nav-emp"><span data-i18n="navEmployees">Employees</span></a></li>
+        <li><a href="timesheets.html" class="sidebar-link" id="nav-time"><span data-i18n="navTimesheets">Timesheets</span></a></li>
+        <li><a href="payroll.html" class="sidebar-link" id="nav-pay"><span data-i18n="navPayroll">Payroll</span></a></li>
+        <li><a href="advances.html" class="sidebar-link" id="nav-adv"><span data-i18n="navAdvances">Salary Advances</span></a></li>
+        <li><a href="reports.html" class="sidebar-link" id="nav-rep"><span data-i18n="navReports">Reports</span></a></li>
+        <li><a href="audit.html" class="sidebar-link active" id="nav-audit"><span data-i18n="navAudit">Audit Logs</span></a></li>
+        <li><a href="settings.html" class="sidebar-link" id="nav-set"><span data-i18n="navSettings">Settings</span></a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%;">
+          <span data-i18n="logout">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-content">
+      <!-- Header -->
+      <header class="content-header">
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <button class="mobile-nav-toggle" id="menuToggle">&#9776;</button>
+          <h1 class="page-title" data-i18n="auditTitle">System Audit Logs</h1>
+        </div>
+        <div class="header-controls">
+          <button class="btn btn-danger btn-sm" id="btnClearAuditLogs">Clear Audit Logs</button>
+          <button class="lang-toggle-btn" id="languageToggle">FR</button>
+        </div>
+      </header>
+
+      <!-- Search & Filters -->
+      <div class="glass-panel filter-bar">
+        <div class="filter-inputs" style="width: 100%;">
+          <input type="text" id="searchAudit" class="form-control" data-i18n-placeholder="search" placeholder="Search..." style="flex-grow:1; max-width: 400px;">
+        </div>
+      </div>
+
+      <!-- Audit Logs Table -->
+      <div class="glass-panel" style="padding: 1rem;">
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th data-i18n="date">Date & Time</th>
+                <th data-i18n="auditAction">Action</th>
+                <th data-i18n="auditUser">User</th>
+                <th data-i18n="auditDetails">Details</th>
+                <th data-i18n="auditIp">IP Address</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted);" data-i18n="loading">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/audit.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Wash Kiosk - Check In / Check Out</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .kiosk-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+      color: #1a73e8;
+      font-size: 24px;
+    }
+
+    p.subtitle {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .display {
+      width: 100%;
+      height: 60px;
+      background: #e8eaed;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 24px;
+      line-height: 60px;
+      letter-spacing: 5px;
+      color: #3c4043;
+      font-weight: bold;
+      border: 1px solid #dadce0;
+      box-sizing: border-box;
+    }
+
+    .pin-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #ffffff;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #3c4043;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #f1f3f4;
+    }
+
+    .btn:active {
+      background-color: #e8eaed;
+    }
+
+    .btn.action {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+      border-color: #d2e3fc;
+    }
+
+    .btn.action:hover {
+      background-color: #d2e3fc;
+    }
+
+    .btn.submit {
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+    }
+
+    .btn.submit:hover {
+      background-color: #1557b0;
+    }
+
+    .notes-container {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .notes-container label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #5f6368;
+      margin-bottom: 4px;
+    }
+
+    .notes-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .success {
+      background-color: #e6f4ea;
+      color: #137333;
+      border: 1px solid #ceead6;
+    }
+
+    .error {
+      background-color: #fce8e6;
+      color: #c5221f;
+      border: 1px solid #fad2cf;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 11px;
+      color: #9aa0a6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="kiosk-container">
+    <h1>Car Wash Station</h1>
+    <p class="subtitle">Enter PIN to Check In or Check Out</p>
+
+    <div class="display" id="pinDisplay">----</div>
+
+    <div class="notes-container">
+      <label for="notes">Check-in/out Notes (Optional):</label>
+      <input type="text" id="notes" class="notes-input" placeholder="e.g. Starting morning shift...">
+    </div>
+
+    <div class="pin-pad">
+      <button class="btn" onclick="pressNum('1')">1</button>
+      <button class="btn" onclick="pressNum('2')">2</button>
+      <button class="btn" onclick="pressNum('3')">3</button>
+      <button class="btn" onclick="pressNum('4')">4</button>
+      <button class="btn" onclick="pressNum('5')">5</button>
+      <button class="btn" onclick="pressNum('6')">6</button>
+      <button class="btn" onclick="pressNum('7')">7</button>
+      <button class="btn" onclick="pressNum('8')">8</button>
+      <button class="btn" onclick="pressNum('9')">9</button>
+      <button class="btn action" onclick="clearPin()">Clear</button>
+      <button class="btn" onclick="pressNum('0')">0</button>
+      <button class="btn submit action" onclick="submitToggle()">Enter</button>
+    </div>
+
+    <div id="msgBox" class="message"></div>
+
+    <div class="footer">
+      Car Wash Check-In Check-Out App &copy; 2026<br>
+      Timezone Enforced: America/Toronto
+    </div>
+  </div>
+
+  <script>
+    let currentPin = "";
+    const display = document.getElementById("pinDisplay");
+    const notesInput = document.getElementById("notes");
+    const msgBox = document.getElementById("msgBox");
+
+    function updateDisplay() {
+      if (currentPin.length === 0) {
+        display.innerText = "----";
+      } else {
+        display.innerText = "*".repeat(currentPin.length);
+      }
+    }
+
+    function pressNum(num) {
+      if (currentPin.length < 6) {
+        currentPin += num;
+        updateDisplay();
+      }
+    }
+
+    function clearPin() {
+      currentPin = "";
+      updateDisplay();
+    }
+
+    async function submitToggle() {
+      if (currentPin.length === 0) {
+        showMsg("Please enter a PIN", false);
+        return;
+      }
+
+      msgBox.style.display = "none";
+
+      try {
+        const response = await fetch("/api/checkins/pin-toggle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            pin: currentPin,
+            notes: notesInput.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showMsg(data.message, true);
+          notesInput.value = "";
+        } else {
+          showMsg(data.error || "An error occurred", false);
+        }
+      } catch (err) {
+        showMsg("Network error. Cannot connect to server.", false);
+      } finally {
+        currentPin = "";
+        updateDisplay();
+      }
+    }
+
+    function showMsg(text, isSuccess) {
+      msgBox.innerText = text;
+      msgBox.className = "message " + (isSuccess ? "success" : "error");
+      msgBox.style.display = "block";
+    }
+  </script>
+</body>
+</html>

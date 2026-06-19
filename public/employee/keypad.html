@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="keypadTitle">Employee Attendance - Car Wash Portal</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/employee.css">
+  <style>
+    .keypad-header {
+      margin-bottom: 2rem;
+    }
+    .back-btn-container {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="main-header">
+    <div class="brand-section">
+      <div class="brand-logo">CW</div>
+      <h1 class="brand-name" data-i18n="appName">Car Wash Portal</h1>
+    </div>
+    <div class="header-controls">
+      <button class="btn btn-secondary btn-sm" id="logoutBtn" data-i18n="logout" style="display:none;">Logout</button>
+      <button class="lang-toggle-btn" id="languageToggle">FR</button>
+    </div>
+  </header>
+
+  <div class="keypad-container">
+    <!-- Back to normal portal link if admin/staff logged in -->
+    <div class="back-btn-container" id="adminPortalBack" style="display: none;">
+      <a href="../admin/dashboard.html" class="btn btn-secondary btn-sm">
+        &larr; <span data-i18n="navDashboard">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="keypad-layout">
+      <!-- Left Column: Clock and Keypad Entry -->
+      <div>
+        <!-- Live Clock -->
+        <div class="clock-widget">
+          <div class="clock-time" id="liveClock">12:00:00 PM</div>
+          <div class="clock-date" id="liveDate">Friday, June 19, 2026</div>
+        </div>
+
+        <!-- Attendance Action Mode Toggle -->
+        <div class="attendance-toggle-wrapper">
+          <button class="attendance-mode-btn active-in" id="btnModeIn">
+            <span data-i18n="checkIn">Check In</span>
+          </button>
+          <button class="attendance-mode-btn" id="btnModeOut">
+            <span data-i18n="checkOut">Check Out</span>
+          </button>
+        </div>
+
+        <!-- Feedback Card (Success/Error) -->
+        <div class="status-feedback-card" id="feedbackCard">
+          <div class="feedback-icon" id="feedbackIcon">✓</div>
+          <div class="feedback-title" id="feedbackTitle">Success</div>
+          <div class="feedback-msg" id="feedbackMsg">Welcome back, John Doe!</div>
+        </div>
+
+        <!-- Keypad Visuals -->
+        <div class="glass-panel" style="padding: 1.5rem 1rem;">
+          <div class="pin-display-wrapper">
+            <label class="form-label" data-i18n="enterPin" style="font-size: 0.95rem;">Enter Your 4-Digit PIN</label>
+            <div class="pin-display">
+              <span class="pin-dot" id="dot-0"></span>
+              <span class="pin-dot" id="dot-1"></span>
+              <span class="pin-dot" id="dot-2"></span>
+              <span class="pin-dot" id="dot-3"></span>
+            </div>
+          </div>
+
+          <!-- Keypad Buttons -->
+          <div class="keypad-grid">
+            <button class="keypad-btn digit-btn" data-digit="1">1</button>
+            <button class="keypad-btn digit-btn" data-digit="2">2</button>
+            <button class="keypad-btn digit-btn" data-digit="3">3</button>
+            
+            <button class="keypad-btn digit-btn" data-digit="4">4</button>
+            <button class="keypad-btn digit-btn" data-digit="5">5</button>
+            <button class="keypad-btn digit-btn" data-digit="6">6</button>
+            
+            <button class="keypad-btn digit-btn" data-digit="7">7</button>
+            <button class="keypad-btn digit-btn" data-digit="8">8</button>
+            <button class="keypad-btn digit-btn" data-digit="9">9</button>
+            
+            <button class="keypad-btn action-btn" id="btnPinClear">C</button>
+            <button class="keypad-btn digit-btn" data-digit="0">0</button>
+            <button class="keypad-btn action-btn" id="btnPinDel">&larr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Live Status & Today's Logs -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <!-- Currently On-Duty Employees -->
+        <div class="glass-panel" style="flex: 1;">
+          <div class="status-panel-title">
+            <span data-i18n="activeStaff">Active Staff on Duty</span>
+            <span class="active-count" id="activeStaffCount">0</span>
+          </div>
+          
+          <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th data-i18n="employeeName">Employee</th>
+                  <th data-i18n="checkInTime">Check-In Time</th>
+                </tr>
+              </thead>
+              <tbody id="activeStaffList">
+                <tr>
+                  <td colspan="2" style="text-align: center; color: var(--text-muted);" data-i18n="loading">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Today's Activity log -->
+        <div class="glass-panel" style="flex: 1;">
+          <div class="status-panel-title">
+            <span data-i18n="todayActions">Today's Activity Log</span>
+          </div>
+          
+          <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+            <table class="modern-table">
+              <thead>
+                <tr>
+                  <th data-i18n="employeeName">Employee</th>
+                  <th data-i18n="time">Time</th>
+                  <th data-i18n="status">Status</th>
+                </tr>
+              </thead>
+              <tbody id="todayLogsList">
+                <tr>
+                  <td colspan="3" style="text-align: center; color: var(--text-muted);" data-i18n="loading">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/employee/keypad.js"></script>
+</body>
+</html>

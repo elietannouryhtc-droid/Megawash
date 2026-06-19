@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navReports">Reports - Car Wash Portal</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <style>
+    .report-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .report-stat-card {
+      padding: 1.25rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--border-radius-sm);
+    }
+    .report-stat-val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--info);
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">CW</div>
+        <h2 class="brand-name" data-i18n="appName">Car Wash Portal</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html" class="sidebar-link" id="nav-dash"><span data-i18n="navDashboard">Dashboard</span></a></li>
+        <li><a href="employees.html" class="sidebar-link" id="nav-emp"><span data-i18n="navEmployees">Employees</span></a></li>
+        <li><a href="timesheets.html" class="sidebar-link" id="nav-time"><span data-i18n="navTimesheets">Timesheets</span></a></li>
+        <li><a href="payroll.html" class="sidebar-link" id="nav-pay"><span data-i18n="navPayroll">Payroll</span></a></li>
+        <li><a href="advances.html" class="sidebar-link" id="nav-adv"><span data-i18n="navAdvances">Salary Advances</span></a></li>
+        <li><a href="reports.html" class="sidebar-link active" id="nav-rep"><span data-i18n="navReports">Reports</span></a></li>
+        <li><a href="audit.html" class="sidebar-link" id="nav-audit"><span data-i18n="navAudit">Audit Logs</span></a></li>
+        <li><a href="settings.html" class="sidebar-link" id="nav-set"><span data-i18n="navSettings">Settings</span></a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%;">
+          <span data-i18n="logout">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-content">
+      <!-- Header -->
+      <header class="content-header">
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <button class="mobile-nav-toggle" id="menuToggle">&#9776;</button>
+          <h1 class="page-title" data-i18n="repTitle">Business Reports</h1>
+        </div>
+        <div class="header-controls">
+          <button class="lang-toggle-btn" id="languageToggle">FR</button>
+        </div>
+      </header>
+
+      <!-- Date filters and Exports -->
+      <div class="glass-panel filter-bar">
+        <div class="filter-inputs">
+          <div class="form-group" style="margin-bottom:0; min-width: 170px;">
+            <label class="form-label" for="repStartDate" data-i18n="startDate" style="font-size:0.75rem;">Start Date</label>
+            <input type="date" id="repStartDate" class="form-control" style="padding: 0.5rem 0.75rem; font-size:0.875rem;">
+          </div>
+          <div class="form-group" style="margin-bottom:0; min-width: 170px;">
+            <label class="form-label" for="repEndDate" data-i18n="endDate" style="font-size:0.75rem;">End Date</label>
+            <input type="date" id="repEndDate" class="form-control" style="padding: 0.5rem 0.75rem; font-size:0.875rem;">
+          </div>
+          <button class="btn btn-primary btn-sm" id="btnGenReport" style="margin-top: auto;" data-i18n="generateReport">Generate Report</button>
+        </div>
+        
+        <div style="display:flex; gap:0.5rem; flex-wrap: wrap; margin-top: auto;">
+          <button class="btn btn-secondary btn-sm" id="btnExportTsPdf">Timesheets PDF</button>
+          <button class="btn btn-secondary btn-sm" id="btnExportTsExcel">Timesheets Excel</button>
+          <button class="btn btn-secondary btn-sm" id="btnExportPrPdf">Payroll PDF</button>
+          <button class="btn btn-secondary btn-sm" id="btnExportPrExcel">Payroll Excel</button>
+          <button class="btn btn-secondary btn-sm" id="btnPrintReport" data-i18n="exportPDF">Print</button>
+        </div>
+      </div>
+
+      <!-- Report Content Panel -->
+      <div class="glass-panel" id="reportContent" style="display:none; padding: 1.5rem;">
+        <h3 id="reportRangeTitle" style="font-weight:700; margin-bottom: 1.5rem; text-align: center;">Report</h3>
+        
+        <!-- Stats summary Row -->
+        <div class="report-stats">
+          <div class="report-stat-card">
+            <div class="form-label" data-i18n="repTotalShifts">Total Shifts</div>
+            <div class="report-stat-val" id="repShiftsCount">0</div>
+          </div>
+          <div class="report-stat-card">
+            <div class="form-label" data-i18n="repTotalHours">Total Hours</div>
+            <div class="report-stat-val" id="repTotalHoursVal">0h</div>
+          </div>
+          <div class="report-stat-card">
+            <div class="form-label" data-i18n="repTotalPayroll">Total Payroll</div>
+            <div class="report-stat-val" id="repTotalPayrollVal">$0.00</div>
+          </div>
+          <div class="report-stat-card">
+            <div class="form-label" data-i18n="repTotalAdvances">Total Advances</div>
+            <div class="report-stat-val" id="repTotalAdvancesVal">$0.00</div>
+          </div>
+        </div>
+
+        <!-- Details list table -->
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th data-i18n="date">Date</th>
+                <th data-i18n="employeeName">Employee</th>
+                <th data-i18n="totalHoursHeader">Hours</th>
+                <th data-i18n="grossPay">Gross Pay</th>
+                <th data-i18n="paymentStatus">Payment Status</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody">
+              <!-- Will be loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty state placeholder -->
+      <div class="glass-panel" id="reportPlaceholder" style="padding: 3rem; text-align: center; color: var(--text-muted);">
+        <p style="font-size: 1.1rem;" data-i18n="search">Select a date range and click Generate Report.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/reports.js"></script>
+</body>
+</html>
