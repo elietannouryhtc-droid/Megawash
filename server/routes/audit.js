@@ -55,4 +55,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @route   DELETE /api/audit
+ * @desc    Clear all audit logs
+ * @access  Private (Admin only)
+ */
+router.delete('/', roleCheck(['admin']), async (req, res) => {
+  try {
+    await db.query('DELETE FROM audit_logs');
+    
+    // Log this action so there is still a record of who cleared the logs
+    await db.query(
+      `INSERT INTO audit_logs (user_id, username, action, details) 
+       VALUES ($1, $2, $3, $4)`,
+      [req.user.id, req.user.username, 'CLEAR_AUDIT_LOGS', 'Audit logs cleared by Administrator.']
+    );
+
+    return res.json({ message: 'Audit logs cleared successfully.' });
+  } catch (error) {
+    console.error('Error clearing audit logs:', error);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 module.exports = router;

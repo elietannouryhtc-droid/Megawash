@@ -108,9 +108,20 @@ document.getElementById('searchAudit').addEventListener('input', (e) => {
   renderAuditsTable(filtered);
 });
 
-// Clear Audit Logs (Disabled for DB security compliance)
-document.getElementById('btnClearAuditLogs').addEventListener('click', () => {
-  showToast('Compliance Notice: Database audit logs cannot be deleted or cleared.', 'error');
+// Clear Audit Logs
+document.getElementById('btnClearAuditLogs').addEventListener('click', async () => {
+  if (confirm('Are you sure you want to clear all audit logs? This action cannot be undone.')) {
+    try {
+      const res = await apiFetch('/api/audit', {
+        method: 'DELETE'
+      });
+      showToast(res.message || 'Audit logs cleared successfully.', 'success');
+      loadAudits();
+    } catch (err) {
+      console.error('Error clearing audit logs:', err);
+      showToast(err.message || 'Failed to clear audit logs.', 'error');
+    }
+  }
 });
 
 function showToast(message, type = 'success') {
