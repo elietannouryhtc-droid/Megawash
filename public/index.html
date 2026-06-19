@@ -2,12 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mega Wash — Login</title>
   <meta name="description" content="Mega Wash employee and admin login portal.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Light Mode Theme Overrides */
+    body.light-mode {
+      background: linear-gradient(135deg, #eef2f6, #dfe5eb, #d0d7e2);
+      color: #1f2937;
+      touch-action: manipulation;
+    }
+    body.light-mode .login-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    }
+    body.light-mode .logo-area .brand {
+      color: #1f2937;
+    }
+    body.light-mode .logo-area .tagline {
+      color: #57606a;
+    }
+    body.light-mode .form-group label {
+      color: #1f2937;
+    }
+    body.light-mode .form-group input {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      color: #1f2937;
+    }
+    body.light-mode .form-group input:focus {
+      background: #ffffff;
+      border-color: #4f46e5;
+    }
+    body.light-mode .form-group input::placeholder {
+      color: #9ca3af;
+    }
+    body.light-mode .lang-btn {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: #4b5563;
+    }
+    body.light-mode .lang-btn.active {
+      background: rgba(79, 70, 229, 0.12);
+      color: #4f46e5;
+      border-color: rgba(79, 70, 229, 0.25);
+    }
+    body.light-mode .footer {
+      color: #57606a;
+    }
 
     body {
       font-family: 'Inter', sans-serif;

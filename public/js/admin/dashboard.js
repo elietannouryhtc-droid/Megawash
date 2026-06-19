@@ -97,7 +97,7 @@ function formatAuditDetails(action, detailsStr) {
   }
   try {
     const details = JSON.parse(detailsStr);
-    const lang = localStorage.getItem('lang') || 'en';
+    const lang = localStorage.getItem('mw_lang') || 'en';
     if (action === 'CHECK_IN') {
       return lang === 'fr' ? `Arrivée : ${details.employee_name || ''}` : `Checked In: ${details.employee_name || ''}`;
     }
@@ -134,28 +134,8 @@ function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// Mobile sidebar panel toggle
-function initSidebarToggle() {
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('adminSidebar');
-  
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuToggle) {
-        sidebar.classList.remove('open');
-      }
-    });
-  }
-}
-
 // Global setup
 document.addEventListener('DOMContentLoaded', () => {
-  initSidebarToggle();
   loadDashboardData();
   
   // Logout handler

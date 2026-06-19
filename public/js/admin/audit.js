@@ -55,7 +55,7 @@ function formatAuditDetails(action, detailsStr) {
   }
   try {
     const details = JSON.parse(detailsStr);
-    const lang = localStorage.getItem('lang') || 'en';
+    const lang = localStorage.getItem('mw_lang') || 'en';
     if (action === 'CHECK_IN') {
       return lang === 'fr' ? `Arrivée : ${details.employee_name || ''}` : `Checked In: ${details.employee_name || ''}`;
     }
@@ -113,25 +113,6 @@ document.getElementById('btnClearAuditLogs').addEventListener('click', () => {
   showToast('Compliance Notice: Database audit logs cannot be deleted or cleared.', 'error');
 });
 
-// Sidebar Mobile Toggle
-function initSidebarToggle() {
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('adminSidebar');
-  
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuToggle) {
-        sidebar.classList.remove('open');
-      }
-    });
-  }
-}
-
 function showToast(message, type = 'success') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
@@ -156,7 +137,6 @@ function escapeHtml(str) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initSidebarToggle();
   loadAudits();
 
   // Logout handler

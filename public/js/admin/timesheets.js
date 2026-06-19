@@ -290,25 +290,6 @@ document.getElementById('btnResetFilters').addEventListener('click', () => {
   applyFilters();
 });
 
-// Sidebar drawer toggle
-function initSidebarToggle() {
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('adminSidebar');
-  
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuToggle) {
-        sidebar.classList.remove('open');
-      }
-    });
-  }
-}
-
 function formatDateTime(isoString) {
   if (!isoString) return '---';
   const date = new Date(isoString);
@@ -346,7 +327,6 @@ function escapeHtml(str) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initSidebarToggle();
   initPage();
 
   // Logout handler

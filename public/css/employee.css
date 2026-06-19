@@ -99,6 +99,7 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   user-select: none;
+  touch-action: manipulation;
 }
 
 .keypad-btn:hover {
@@ -150,6 +151,7 @@
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-muted);
   transition: all var(--transition-normal);
+  touch-action: manipulation;
 }
 
 .attendance-mode-btn.active-in {

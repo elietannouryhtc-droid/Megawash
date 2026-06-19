@@ -203,25 +203,6 @@ advanceForm.addEventListener('submit', async (e) => {
   }
 });
 
-// Sidebar navigation toggle
-function initSidebarToggle() {
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('adminSidebar');
-  
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuToggle) {
-        sidebar.classList.remove('open');
-      }
-    });
-  }
-}
-
 function showToast(message, type = 'success') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
@@ -246,7 +227,6 @@ function escapeHtml(str) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initSidebarToggle();
   initPage();
 
   // Logout handler

@@ -191,6 +191,38 @@ document.addEventListener('DOMContentLoaded', () => {
     checkPageProtection();
   }
 
+  // Inject Mobile Sidebar Toggling & Backdrop dynamically for all admin pages
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('adminSidebar');
+  if (menuToggle && sidebar) {
+    let backdrop = document.getElementById('adminSidebarBackdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.id = 'adminSidebarBackdrop';
+      backdrop.className = 'sidebar-backdrop';
+      document.body.appendChild(backdrop);
+    }
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = sidebar.classList.toggle('open');
+      backdrop.classList.toggle('active', isOpen);
+    });
+
+    const closeSidebar = () => {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('active');
+    };
+
+    backdrop.addEventListener('click', closeSidebar);
+    
+    document.addEventListener('click', (e) => {
+      if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && e.target !== menuToggle) {
+        closeSidebar();
+      }
+    });
+  }
+
   // Inject Theme Toggle Button next to language toggle
   const langToggle = document.getElementById('languageToggle');
   if (langToggle) {

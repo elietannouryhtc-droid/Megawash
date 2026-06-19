@@ -204,6 +204,26 @@
   cursor: pointer;
 }
 
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 150;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.sidebar-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 @media (max-width: 768px) {
   .mobile-nav-toggle {
     display: block;
@@ -221,5 +241,31 @@
     margin-left: 0;
     max-width: 100%;
     padding: 1.25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+  .filter-inputs {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  .filter-inputs .form-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .filter-inputs input,
+  .filter-inputs select {
+    width: 100%;
+  }
+  .filter-bar .btn,
+  .filter-bar div[style*="display:flex"] {
+    width: 100%;
   }
 }

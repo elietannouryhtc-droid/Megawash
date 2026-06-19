@@ -315,12 +315,12 @@ const translations = {
   }
 };
 
-let currentLang = localStorage.getItem('lang') || 'en';
+let currentLang = localStorage.getItem('mw_lang') || 'en';
 
 function setLanguage(lang) {
   if (translations[lang]) {
     currentLang = lang;
-    localStorage.setItem('lang', lang);
+    localStorage.setItem('mw_lang', lang);
     applyTranslations();
   }
 }
