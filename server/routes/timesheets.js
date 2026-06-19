@@ -32,7 +32,8 @@ router.get('/', async (req, res) => {
       settings[row.key] = parseFloat(row.value);
     });
 
-    const overtimeThreshold = settings['overtime_weekly_threshold'] || 44.0;
+    const rawThreshold = settings['overtime_weekly_threshold'];
+    const overtimeThreshold = (rawThreshold === undefined || isNaN(rawThreshold)) ? 0 : rawThreshold;
 
     // 2. Parse date filters to UTC bounds matching Toronto days
     const utcStart = parseLocalDateToUTC(startDateStr, false);
@@ -126,7 +127,7 @@ router.get('/', async (req, res) => {
         const weekHours = sheet.weeks[weekKey];
         totalHours += weekHours;
 
-        if (weekHours > overtimeThreshold) {
+        if (overtimeThreshold > 0 && weekHours > overtimeThreshold) {
           const ot = weekHours - overtimeThreshold;
           overtimeHours += ot;
           regularHours += overtimeThreshold;

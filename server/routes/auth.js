@@ -22,13 +22,13 @@ router.post('/login', async (req, res) => {
   }
 
   try {
-    // Find user in database, join with employee info if applicable
+    // Find user in database, join with employee info if applicable (case-insensitive username check)
     const result = await db.query(
       `SELECT u.id, u.username, u.password, u.role, u.employee_id, e.first_name, e.last_name 
        FROM users u
        LEFT JOIN employees e ON u.employee_id = e.id
-       WHERE u.username = $1`,
-      [username]
+       WHERE LOWER(u.username) = LOWER($1)`,
+      [username.trim()]
     );
 
     if (result.rows.length === 0) {

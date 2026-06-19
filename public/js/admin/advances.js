@@ -156,7 +156,7 @@ async function deleteAdvance(id) {
 }
 
 // Open modal
-document.getElementById('btnNewRequest').addEventListener('click', () => {
+document.getElementById('btnRecordAdvance').addEventListener('click', () => {
   document.getElementById('advDateInput').value = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Toronto' });
   document.getElementById('advAmountInput').value = '';
   document.getElementById('advReasonInput').value = '';

@@ -10,11 +10,11 @@ async function loadSettings() {
       currentSettings[s.key] = s.value;
     });
 
-    document.getElementById('setCompanyName').value = currentSettings.company_name || 'Mega Wash';
-    document.getElementById('setCurrencySymbol').value = currentSettings.currency || '$';
-    document.getElementById('setTaxRateVal').value = currentSettings.tax_rate || 0;
-    document.getElementById('setOvertimeRateVal').value = currentSettings.overtime_rate_multiplier || 1.5;
-    document.getElementById('setOvertimeThresholdVal').value = currentSettings.overtime_weekly_threshold || 44;
+    document.getElementById('setCompanyName').value = currentSettings.company_name || '';
+    document.getElementById('setCurrencySymbol').value = currentSettings.currency || '';
+    document.getElementById('setTaxRateVal').value = currentSettings.tax_rate !== undefined && currentSettings.tax_rate !== null ? currentSettings.tax_rate : '';
+    document.getElementById('setOvertimeRateVal').value = currentSettings.overtime_rate_multiplier !== undefined && currentSettings.overtime_rate_multiplier !== null ? currentSettings.overtime_rate_multiplier : '';
+    document.getElementById('setOvertimeThresholdVal').value = currentSettings.overtime_weekly_threshold !== undefined && currentSettings.overtime_weekly_threshold !== null ? currentSettings.overtime_weekly_threshold : '';
   } catch (err) {
     console.error('Failed to load settings:', err);
     showToast('Failed to retrieve settings from server.', 'error');

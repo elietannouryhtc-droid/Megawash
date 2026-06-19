@@ -115,14 +115,17 @@ function checkPageProtection(requiredRole = null) {
     return;
   }
 
-  if (requiredRole && user.role !== requiredRole) {
-    console.error('Unauthorized access. Redirecting...');
-    redirectByRole(user.role);
+  if (requiredRole) {
+    const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!allowedRoles.includes(user.role)) {
+      console.error('Unauthorized access. Redirecting...');
+      redirectByRole(user.role);
+    }
   }
 }
 
 function redirectByRole(role) {
-  if (role === 'admin') {
+  if (role === 'admin' || role === 'manager') {
     window.location.href = '/admin/dashboard.html';
   } else {
     window.location.href = '/employee/keypad.html';
@@ -168,7 +171,11 @@ async function apiFetch(endpoint, options = {}) {
 document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
   if (path.includes('/admin/')) {
-    checkPageProtection('admin');
+    if (path.includes('settings.html')) {
+      checkPageProtection('admin');
+    } else {
+      checkPageProtection(['admin', 'manager']);
+    }
   } else if (path.includes('/employee/')) {
     checkPageProtection('employee');
   } else if (path.endsWith('index.html') || path === '/') {

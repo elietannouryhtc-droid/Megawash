@@ -82,8 +82,11 @@ router.post('/generate', async (req, res) => {
     settingsResult.rows.forEach(row => {
       settings[row.key] = parseFloat(row.value);
     });
-    const overtimeThreshold = settings['overtime_weekly_threshold'] || 44.0;
-    const overtimeMultiplier = settings['overtime_rate_multiplier'] || 1.5;
+    const rawThreshold = settings['overtime_weekly_threshold'];
+    const overtimeThreshold = (rawThreshold === undefined || isNaN(rawThreshold)) ? 0 : rawThreshold;
+
+    const rawMultiplier = settings['overtime_rate_multiplier'];
+    const overtimeMultiplier = (rawMultiplier === undefined || isNaN(rawMultiplier)) ? 1.0 : rawMultiplier;
 
     // 2. Fetch employees to process
     let empQuery = "SELECT id, first_name, last_name, hourly_rate, status FROM employees";
@@ -163,7 +166,7 @@ router.post('/generate', async (req, res) => {
 
       Object.keys(weeklyHours).forEach(weekKey => {
         const hrs = weeklyHours[weekKey];
-        if (hrs > overtimeThreshold) {
+        if (overtimeThreshold > 0 && hrs > overtimeThreshold) {
           totalOvertimeHours += (hrs - overtimeThreshold);
           totalRegularHours += overtimeThreshold;
         } else {

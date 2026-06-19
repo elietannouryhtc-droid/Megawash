@@ -35,18 +35,20 @@ router.put('/:key', roleCheck(['admin']), async (req, res) => {
     return res.status(400).json({ error: 'Setting value is required.' });
   }
 
-  // Validate settings inputs if they are overtime configs
-  if (key === 'overtime_weekly_threshold') {
-    const val = parseFloat(value);
-    if (isNaN(val) || val <= 0) {
-      return res.status(400).json({ error: 'Overtime weekly threshold must be a positive number.' });
+  // Validate settings inputs if they are overtime configs and value is not empty
+  if (value !== '') {
+    if (key === 'overtime_weekly_threshold') {
+      const val = parseFloat(value);
+      if (isNaN(val) || val <= 0) {
+        return res.status(400).json({ error: 'Overtime weekly threshold must be a positive number.' });
+      }
     }
-  }
 
-  if (key === 'overtime_rate_multiplier') {
-    const val = parseFloat(value);
-    if (isNaN(val) || val < 1.0) {
-      return res.status(400).json({ error: 'Overtime rate multiplier must be 1.0 or greater.' });
+    if (key === 'overtime_rate_multiplier') {
+      const val = parseFloat(value);
+      if (isNaN(val) || val < 1.0) {
+        return res.status(400).json({ error: 'Overtime rate multiplier must be 1.0 or greater.' });
+      }
     }
   }
 

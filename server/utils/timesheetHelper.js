@@ -13,7 +13,8 @@ async function calculateTimesheets(startDateStr, endDateStr, employeeId = null) 
   settingsResult.rows.forEach(row => {
     settings[row.key] = parseFloat(row.value);
   });
-  const overtimeThreshold = settings['overtime_weekly_threshold'] || 44.0;
+  const rawThreshold = settings['overtime_weekly_threshold'];
+  const overtimeThreshold = (rawThreshold === undefined || isNaN(rawThreshold)) ? 0 : rawThreshold;
 
   // 2. Parse dates
   const utcStart = parseLocalDateToUTC(startDateStr, false);
@@ -99,7 +100,7 @@ async function calculateTimesheets(startDateStr, endDateStr, employeeId = null) 
       const weekHours = sheet.weeks[weekKey];
       totalHours += weekHours;
 
-      if (weekHours > overtimeThreshold) {
+      if (overtimeThreshold > 0 && weekHours > overtimeThreshold) {
         const ot = weekHours - overtimeThreshold;
         overtimeHours += ot;
         regularHours += overtimeThreshold;
