@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="navUsers">User Accounts - Car Wash Portal</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">CW</div>
+        <h2 class="brand-name" data-i18n="appName">Car Wash Portal</h2>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="dashboard.html" class="sidebar-link" id="nav-dash"><span data-i18n="navDashboard">Dashboard</span></a></li>
+        <li><a href="employees.html" class="sidebar-link" id="nav-emp"><span data-i18n="navEmployees">Employees</span></a></li>
+        <li><a href="timesheets.html" class="sidebar-link" id="nav-time"><span data-i18n="navTimesheets">Timesheets</span></a></li>
+        <li><a href="payroll.html" class="sidebar-link" id="nav-pay"><span data-i18n="navPayroll">Payroll</span></a></li>
+        <li><a href="advances.html" class="sidebar-link" id="nav-adv"><span data-i18n="navAdvances">Salary Advances</span></a></li>
+        <li><a href="reports.html" class="sidebar-link" id="nav-rep"><span data-i18n="navReports">Reports</span></a></li>
+        <li><a href="audit.html" class="sidebar-link" id="nav-audit"><span data-i18n="navAudit">Audit Logs</span></a></li>
+        <li><a href="settings.html" class="sidebar-link" id="nav-set"><span data-i18n="navSettings">Settings</span></a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%;">
+          <span data-i18n="logout">Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-content">
+      <!-- Header -->
+      <header class="content-header">
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <button class="mobile-nav-toggle" id="menuToggle">&#9776;</button>
+          <h1 class="page-title" data-i18n="userTitle">User Accounts Management</h1>
+        </div>
+        <div class="header-controls">
+          <button class="btn btn-primary btn-sm" id="btnCreateUser">
+            + <span data-i18n="addUserBtn">Create User Account</span>
+          </button>
+          <button class="lang-toggle-btn" id="languageToggle">FR</button>
+        </div>
+      </header>
+
+      <!-- Search & Filters -->
+      <div class="glass-panel filter-bar">
+        <div class="filter-inputs" style="width:100%;">
+          <input type="text" id="searchUser" class="form-control" data-i18n-placeholder="search" placeholder="Search..." style="flex-grow:1; max-width: 400px;">
+        </div>
+      </div>
+
+      <!-- Users List -->
+      <div class="glass-panel" style="padding: 1rem;">
+        <div class="table-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th data-i18n="usernameHeader">Username</th>
+                <th data-i18n="userRole">Login Role</th>
+                <th data-i18n="linkedEmployee">Linked Employee</th>
+                <th data-i18n="date">Created At</th>
+                <th data-i18n="actions" style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted);" data-i18n="loading">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Create/Edit User Modal Dialog -->
+  <div class="modal-overlay" id="userModal">
+    <div class="glass-panel modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="userModalTitle" data-i18n="addUserBtn">Create User Account</h3>
+        <button class="modal-close" id="userModalClose">&times;</button>
+      </div>
+      <form id="userForm">
+        <input type="hidden" id="userId">
+        
+        <div class="form-group">
+          <label class="form-label" for="userUsername" data-i18n="username">Username</label>
+          <input type="text" id="userUsername" class="form-control" required placeholder="e.g. manager_jane">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="userPassword" data-i18n="password">Password</label>
+          <input type="password" id="userPassword" class="form-control" required placeholder="••••••••">
+          <small class="form-help" id="userPasswordHelp" style="display:none;" data-i18n="passwordHelp">Leave blank to keep current password</small>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="userRoleSelect" data-i18n="userRole">Login Role</label>
+          <select id="userRoleSelect" class="form-control" required>
+            <option value="admin" data-i18n="empRoleAdmin">Admin</option>
+            <option value="manager" data-i18n="empRoleEmployee">Manager</option>
+            <option value="employee">Employee</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="userEmployeeSelect" data-i18n="linkedEmployee">Linked Employee Profile</label>
+          <select id="userEmployeeSelect" class="form-control">
+            <option value="">-- None / Shared --</option>
+          </select>
+        </div>
+
+        <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btnCancelUser" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" data-i18n="save">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="../js/i18n.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/users.js"></script>
+</body>
+</html>

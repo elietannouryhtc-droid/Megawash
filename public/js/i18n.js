@@ -62,6 +62,7 @@ const translations = {
     navAudit: "Audit Logs",
     navSettings: "Settings",
     navMore: "More",
+    navUsers: "User Accounts",
 
     // Admin Dashboard
     dashTitle: "Dashboard Overview",
@@ -158,7 +159,17 @@ const translations = {
     setOvertimeRate: "Overtime Rate Multiplier (e.g. 1.5)",
     setOvertimeThreshold: "Weekly Overtime Threshold (hours)",
     setTaxRate: "Estimated Payroll Tax Deduction (%)",
-    settingsSaved: "System settings saved successfully."
+    settingsSaved: "System settings saved successfully.",
+
+    // Admin Users
+    userTitle: "User Accounts Management",
+    addUserBtn: "Create User Account",
+    editUserBtn: "Modify User Account",
+    usernameHeader: "Username / Login",
+    userRole: "Login Role",
+    linkedEmployee: "Linked Employee",
+    confirmUserDelete: "Are you sure you want to delete this user account? This action cannot be undone.",
+    passwordHelp: "Leave blank to keep current password"
   },
   fr: {
     // General
@@ -223,6 +234,7 @@ const translations = {
     navAudit: "Journal d'Audit",
     navSettings: "Configuration",
     navMore: "Plus",
+    navUsers: "Comptes Utilisateurs",
 
     // Admin Dashboard
     dashTitle: "Aperçu du Tableau de Bord",
@@ -319,7 +331,17 @@ const translations = {
     setOvertimeRate: "Multiplicateur Heures Suppl. (ex: 1.5)",
     setOvertimeThreshold: "Seuil Heures Suppl. (par semaine)",
     setTaxRate: "Déduction Fiscale Estimée (%)",
-    settingsSaved: "Paramètres système enregistrés avec succès."
+    settingsSaved: "Paramètres système enregistrés avec succès.",
+
+    // Admin Users
+    userTitle: "Gestion des Comptes Utilisateurs",
+    addUserBtn: "Créer un Compte Utilisateur",
+    editUserBtn: "Modifier le Compte Utilisateur",
+    usernameHeader: "Nom d'utilisateur",
+    userRole: "Rôle de Connexion",
+    linkedEmployee: "Employé Lié",
+    confirmUserDelete: "Êtes-vous sûr de vouloir supprimer ce compte utilisateur? Cette action est irréversible.",
+    passwordHelp: "Laissez vide pour conserver le mot de passe actuel"
   }
 };
 

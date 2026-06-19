@@ -247,6 +247,32 @@ document.addEventListener('DOMContentLoaded', () => {
     langToggle.parentNode.insertBefore(themeBtn, langToggle);
   }
 
+  // Inject Users tab into desktop sidebar dynamically (Only visible to Admin)
+  const currentUser = getCurrentUser();
+  if (currentUser && currentUser.role === 'admin') {
+    const sidebarNav = document.querySelector('.sidebar-nav');
+    if (sidebarNav && !document.getElementById('nav-users')) {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <a href="users.html" class="sidebar-link" id="nav-users">
+          <span data-i18n="navUsers">User Accounts</span>
+        </a>
+      `;
+      const settingsLink = document.getElementById('nav-set');
+      if (settingsLink && settingsLink.parentNode) {
+        sidebarNav.insertBefore(li, settingsLink.parentNode);
+      } else {
+        sidebarNav.appendChild(li);
+      }
+    }
+  }
+
+  // Highlight Users in desktop sidebar if viewing users.html
+  if (window.location.pathname.includes('users.html')) {
+    const link = document.getElementById('nav-users');
+    if (link) link.classList.add('active');
+  }
+
   // Inject Mobile Bottom Navigation
   injectMobileNav();
 });
@@ -297,6 +323,10 @@ function injectMobileNav() {
     drawer = document.createElement('div');
     drawer.id = 'moreMenuDrawer';
     drawer.className = 'more-menu-drawer';
+    
+    const user = getCurrentUser();
+    const isAdmin = user && user.role === 'admin';
+
     drawer.innerHTML = `
       <div class="drawer-drag-indicator"></div>
       <div class="drawer-grid">
@@ -312,6 +342,12 @@ function injectMobileNav() {
           <span class="icon">📋</span>
           <span data-i18n="navAudit">Audit Logs</span>
         </a>
+        ${isAdmin ? `
+        <a href="users.html" class="drawer-item" id="drawer-nav-users">
+          <span class="icon">👥</span>
+          <span data-i18n="navUsers">User Accounts</span>
+        </a>
+        ` : ''}
         <a href="settings.html" class="drawer-item" id="drawer-nav-set">
           <span class="icon">⚙️</span>
           <span data-i18n="navSettings">Settings</span>
@@ -345,6 +381,9 @@ function injectMobileNav() {
     document.getElementById('drawer-nav-rep').style.borderColor = 'var(--primary)';
   } else if (path.includes('audit.html')) {
     document.getElementById('drawer-nav-audit').style.borderColor = 'var(--primary)';
+  } else if (path.includes('users.html')) {
+    const uLink = document.getElementById('drawer-nav-users');
+    if (uLink) uLink.style.borderColor = 'var(--primary)';
   } else if (path.includes('settings.html')) {
     document.getElementById('drawer-nav-set').style.borderColor = 'var(--primary)';
   }

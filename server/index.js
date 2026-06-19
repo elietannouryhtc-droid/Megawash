@@ -32,6 +32,7 @@ app.use('/api/reports', require('./routes/reports'));
 app.use('/api/audit', require('./routes/audit'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/dashboard', require('./routes/dashboard'));
+app.use('/api/users', require('./routes/users'));
 
 // Serve index.html as the entry point for frontend routing
 app.get('*', (req, res, next) => {
