@@ -121,11 +121,57 @@ async function loadStatusBoards() {
         }).join('');
       }
     }
+    // Also Render to Drawer
+    const drawerActiveListEl = document.getElementById('drawerActiveStaffList');
+    const drawerActiveCountEl = document.getElementById('drawerActiveStaffCount');
+    const headerLiveCountEl = document.getElementById('headerLiveCount');
+    
+    if (drawerActiveCountEl) drawerActiveCountEl.textContent = statusData.checkedIn.length;
+    if (headerLiveCountEl) headerLiveCountEl.textContent = statusData.checkedIn.length;
+
+    if (drawerActiveListEl) {
+      if (statusData.checkedIn.length === 0) {
+        drawerActiveListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No employees currently on shift.</td></tr>`;
+      } else {
+        drawerActiveListEl.innerHTML = statusData.checkedIn.map(s => {
+          const checkTime = new Date(s.check_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          return `
+            <tr>
+              <td><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--success); margin-right:8px; box-shadow: 0 0 8px var(--success);"></span>${escapeHtml(s.first_name + ' ' + s.last_name)}</td>
+              <td>${checkTime}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    const drawerTodayLogsEl = document.getElementById('drawerTodayLogsList');
+    if (drawerTodayLogsEl) {
+      if (recentActions.length === 0) {
+        drawerTodayLogsEl.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No activity recorded today.</td></tr>`;
+      } else {
+        drawerTodayLogsEl.innerHTML = recentActions.map(l => {
+          const badgeClass = l.status === 'IN' ? 'badge-success' : 'badge-danger';
+          const label = l.status === 'IN' ? t('checkIn') : t('checkOut');
+          return `
+            <tr>
+              <td>${escapeHtml(l.employeeName)}</td>
+              <td>${l.time}</td>
+              <td><span class="badge ${badgeClass}">${label}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
   } catch (err) {
     console.error('Failed to load status boards from API:', err);
     const activeListEl = document.getElementById('activeStaffList');
     if (activeListEl) {
       activeListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">Failed to load live status from server.</td></tr>`;
+    }
+    const drawerActiveListEl = document.getElementById('drawerActiveStaffList');
+    if (drawerActiveListEl) {
+      drawerActiveListEl.innerHTML = `<tr><td colspan="2" style="text-align: center; color: var(--text-muted);">Failed to load live status from server.</td></tr>`;
     }
   }
 }
@@ -288,6 +334,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set up keypad and live panels
   initKeypad();
   loadStatusBoards();
+
+  // Sidebar Drawer event listeners (for mobile/tablet toggle)
+  const toggleBtn = document.getElementById('btnToggleLiveSidebar');
+  const closeBtn = document.getElementById('btnLiveSidebarClose');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const sidebar = document.getElementById('liveSidebar');
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+    });
+  }
+
+  if (closeBtn && sidebar) {
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+    });
+  }
+
+  if (backdrop && sidebar) {
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+    });
+  }
 
   // Reload boards if user toggles language
   document.addEventListener('languageChanged', () => {

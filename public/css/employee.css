@@ -229,3 +229,128 @@
   border-radius: 20px;
   font-weight: 600;
 }
+
+/* ──────────────────────────────────────────────────────── */
+/* Live Status Sidebar Drawer (Mobile & Tablet)             */
+/* ──────────────────────────────────────────────────────── */
+
+.live-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  visibility: hidden;
+  transition: visibility var(--transition-normal);
+}
+
+.live-sidebar.open {
+  visibility: visible;
+}
+
+.sidebar-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.live-sidebar.open .sidebar-backdrop {
+  opacity: 1;
+}
+
+.sidebar-drawer {
+  position: absolute;
+  top: 0;
+  right: -360px;
+  width: 360px;
+  max-width: 85%;
+  height: 100%;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--glass-border);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  transition: right var(--transition-normal);
+  padding: 1.5rem;
+  z-index: 2;
+}
+
+.live-sidebar.open .sidebar-drawer {
+  right: 0;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.drawer-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color var(--transition-fast);
+}
+
+.drawer-close:hover {
+  color: var(--text-main);
+}
+
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive Layout Breakpoint for Tablet/Mobile */
+@media (max-width: 1024px) {
+  .keypad-layout {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 1rem auto 0 auto;
+  }
+  .desktop-status-panel {
+    display: none !important;
+  }
+  #btnToggleLiveSidebar {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  #btnToggleLiveSidebar {
+    display: none !important;
+  }
+  .live-sidebar {
+    display: none !important;
+  }
+}
