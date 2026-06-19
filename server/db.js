@@ -87,6 +87,19 @@ async function initDb() {
       console.log('Manager user seeded (username: manager, password: manager123).');
     }
 
+    // Seed default shared employee user programmatically if not exists
+    const employeeUserCheck = await client.query("SELECT * FROM users WHERE username = 'employee'");
+    if (employeeUserCheck.rows.length === 0) {
+      console.log('Seeding default shared employee user...');
+      const employeePasswordHash = await bcrypt.hash('employee', 10);
+      await client.query(
+        `INSERT INTO users (username, password, role, employee_id) 
+         VALUES ($1, $2, $3, $4)`,
+        ['employee', employeePasswordHash, 'employee', null]
+      );
+      console.log('Employee shared user seeded (username: employee, password: employee).');
+    }
+
   } catch (error) {
     console.error('Database initialization failed:', error);
     throw error;

@@ -229,7 +229,6 @@ async function submitPin() {
     showFeedback(err.message || t('pinError'), 'error');
   }
 }
-}
 
 // Show UI feedback card for 4 seconds
 function showFeedback(message, type, employeeName = '') {

@@ -6,14 +6,13 @@ const roleCheck = require('../middleware/roleCheck');
 const logAction = require('../utils/auditLogger');
 
 router.use(auth);
-router.use(roleCheck(['admin'])); // Only admins can view or modify global settings
 
 /**
  * @route   GET /api/settings
  * @desc    Get all system settings
- * @access  Private (Admin)
+ * @access  Private (Admin, Manager)
  */
-router.get('/', async (req, res) => {
+router.get('/', roleCheck(['admin', 'manager']), async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM settings ORDER BY key ASC');
     return res.json(result.rows);
@@ -28,7 +27,7 @@ router.get('/', async (req, res) => {
  * @desc    Update a specific setting value
  * @access  Private (Admin)
  */
-router.put('/:key', async (req, res) => {
+router.put('/:key', roleCheck(['admin']), async (req, res) => {
   const { key } = req.params;
   const { value } = req.body;
 
